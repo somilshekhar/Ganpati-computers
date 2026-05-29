@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Background } from "@/components/Background";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { ArrowLeft, ArrowRight, Search, SlidersHorizontal, ShoppingCart, Info, X, ChevronLeft, ChevronRight, ChevronUp, Share2, Home, Heart, User } from "lucide-react";
+import { ArrowLeft, ArrowRight, Search, SlidersHorizontal, ShoppingCart, Info, X, ChevronLeft, ChevronRight, ChevronUp, Share2, Home, Heart, User, Sparkle } from "lucide-react";
 import { useState, useMemo, useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 
@@ -200,11 +200,32 @@ const SWATCHES = [
   { name: "OB", color: "#1A202C", label: "Obsidian Black" },
 ];
 
+const gridVariants: any = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+      delayChildren: 0.05
+    }
+  }
+};
+
+const cardVariants: any = {
+  hidden: { opacity: 0, y: 15 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+};
+
 const CATEGORIES = ["All", "Laptops", "Desktops", "Components", "Accessories"] as const;
 
 export const Route = createFileRoute("/products")({
   validateSearch: productSearchSchema,
-  head: () => ({ meta: [{ title: "Products — Ganpati Computers" }] }),
+  head: () => ({
+    meta: [
+      { title: "Products — Ganpati Computers" },
+      { name: "description", content: "Browse our premium selection of high-performance custom laptops, custom gaming desktops, hardware components, and accessories." }
+    ]
+  }),
   component: ProductsPage,
 });
 
@@ -259,22 +280,23 @@ function ProductsPage() {
   }, [selectedCategory, searchQuery, sortBy]);
 
   return (
-    <motion.main
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="relative min-h-screen p-0 md:pt-2 md:px-6 md:pb-6 lg:min-h-screen lg:pt-2 lg:px-6 lg:pb-6"
-    >
-      <Background />
-      <div className="mx-auto flex min-h-screen md:min-h-[calc(100vh-1.5rem)] max-w-[1400px] flex-col rounded-none md:rounded-[32px] bg-white/70 backdrop-blur-xl shadow-glass ring-0 md:ring-1 ring-white/60 p-0 md:p-1 lg:p-2">
-        <Navbar />
+    <div className="relative min-h-screen bg-[#0a0a0a] text-white flex flex-col font-sans antialiased overflow-x-hidden selection:bg-white/10 selection:text-white">
+      {/* Website Navbar */}
+      <Navbar />
 
-        <div className="flex-1 px-4 py-8 md:px-8 pb-20 md:pb-8">
+      {/* Main Section */}
+      <motion.main
+        initial="hidden"
+        animate="show"
+        variants={gridVariants}
+        className="flex-grow px-4 sm:px-6 md:px-10 lg:px-14 py-6 sm:py-8 md:py-10 max-w-[1400px] mx-auto w-full flex flex-col gap-6"
+      >
+        <div className="flex-1 flex flex-col">
           {/* Header */}
           <div className="mb-6 flex items-center justify-between">
             <Link
               to="/"
-              className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-ink-soft hover:text-ink transition-colors group"
+              className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-white/60 hover:text-white transition-colors group"
             >
               <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-1" />
               Back
@@ -282,9 +304,21 @@ function ProductsPage() {
           </div>
 
           {/* Promotional Curved Banner */}
-          <div className="relative overflow-hidden rounded-[24px] bg-[#1c1c1f] p-6 md:p-8 mb-8 border border-white/5 shadow-lg flex flex-col md:flex-row items-center justify-between gap-6 min-h-[180px]">
-            <div className="flex-1 space-y-3 text-left">
-              <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#B287FF] bg-[#B287FF]/10 px-2.5 py-1 rounded-full">
+          <div className="relative overflow-hidden rounded-[24px] bg-[#1c1c1f] p-6 md:p-8 mb-8 border border-white/5 shadow-lg flex flex-col md:flex-row items-center justify-between gap-6 min-h-[180px] noise-overlay">
+            {/* Background Video */}
+            <video
+              src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260507_153148_d7a3e1dd-e5d0-4ce6-8306-00d7522ecc44.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-screen pointer-events-none"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent pointer-events-none" />
+
+            <div className="relative z-10 flex-grow space-y-3 text-left">
+              <span className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.2em] text-[#B287FF] bg-[#B287FF]/10 px-2.5 py-1 rounded-full border border-[#B287FF]/20">
+                <Sparkle className="h-2.5 w-2.5 animate-pulse" />
                 Summer Offer
               </span>
               <h2 className="font-display text-2xl md:text-3xl font-extrabold text-white tracking-tight leading-none">
@@ -306,7 +340,7 @@ function ProductsPage() {
               initial={{ y: 8 }}
               animate={{ y: [-8, 8, -8] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="relative w-48 h-36 flex items-center justify-center pointer-events-none"
+              className="relative w-48 h-36 flex items-center justify-center pointer-events-none z-10"
             >
               <img
                 src="https://images.unsplash.com/photo-1547082299-de196ea013d6?w=400&auto=format&fit=crop&q=80"
@@ -326,7 +360,7 @@ function ProductsPage() {
                 placeholder="Search products, GPUs, custom builds..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-11 pl-11 pr-4 rounded-full border border-black/10 bg-white/50 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-black/5 focus:border-black/25 transition-all text-ink"
+                className="w-full h-11 pl-11 pr-4 rounded-full border border-white/5 bg-white/5 text-sm placeholder:text-zinc-500 text-white focus:outline-none focus:ring-2 focus:ring-white/10 focus:border-white/20 transition-all"
               />
             </div>
 
@@ -337,11 +371,11 @@ function ProductsPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="h-10 px-3 pr-8 rounded-full border border-black/10 bg-white/50 text-xs font-bold uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-black/5 transition-all cursor-pointer text-ink"
+                className="h-10 px-3 pr-8 rounded-full border border-white/5 bg-[#121214] text-xs font-bold uppercase tracking-wider text-white focus:outline-none focus:ring-2 focus:ring-white/10 transition-all cursor-pointer"
               >
-                <option value="default">Popularity</option>
-                <option value="price-asc">Price: Low-High</option>
-                <option value="price-desc">Price: High-Low</option>
+                <option value="default" className="bg-[#0a0a0a] text-white">Popularity</option>
+                <option value="price-asc" className="bg-[#0a0a0a] text-white">Price: Low-High</option>
+                <option value="price-desc" className="bg-[#0a0a0a] text-white">Price: High-Low</option>
               </select>
             </div>
           </div>
@@ -356,8 +390,8 @@ function ProductsPage() {
                   onClick={() => setSelectedCategory(cat)}
                   className={`h-9 px-5 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap border shrink-0 ${
                     isActive
-                      ? "bg-zinc-950 text-white border-zinc-950 shadow-md"
-                      : "bg-white/80 text-zinc-500 border-zinc-200/60 hover:border-zinc-300 hover:text-zinc-800"
+                      ? "bg-[#B287FF] text-black border-[#B287FF] shadow-md"
+                      : "bg-white/5 text-zinc-400 border-white/5 hover:border-white/10 hover:text-white"
                   }`}
                 >
                   {cat}
@@ -367,77 +401,84 @@ function ProductsPage() {
           </div>
 
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-display text-lg font-black tracking-tight text-ink uppercase">
+            <h2 className="font-display text-lg font-bold tracking-tight text-white uppercase flex items-center gap-2">
+              <Sparkle className="h-4 w-4 text-[#B287FF]" />
               {selectedCategory === "All" ? "New Arrivals" : selectedCategory}
             </h2>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-ink-soft">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
               {filteredProducts.length} Items
             </span>
           </div>
 
           {/* Products Grid */}
           {filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            <motion.div 
+              variants={gridVariants}
+              initial="hidden"
+              animate="show"
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+            >
               {filteredProducts.map((product) => (
-                <TiltCard
-                  key={product.id}
-                  className="group flex flex-col overflow-hidden rounded-[24px] bg-white border border-black/5 shadow-sm transition-all duration-300 hover:shadow-md cursor-pointer relative"
-                  onClick={() => setSelectedProduct(product)}
-                >
-                  {/* Image wrapper */}
-                  <div className="relative aspect-square w-full overflow-hidden bg-zinc-100/70 p-4 flex items-center justify-center">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      loading="lazy"
-                      className="max-h-[90%] max-w-[90%] object-contain transition-transform duration-500 group-hover:scale-105"
-                    />
-                    
-                    {/* Floating circular shop/enquire CTA */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleEnquire(product.name);
-                      }}
-                      className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 shadow-sm flex items-center justify-center text-zinc-800 hover:bg-[#B287FF] hover:text-white hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer z-10 border border-zinc-100"
-                    >
-                      <ShoppingCart className="h-3.5 w-3.5" />
-                    </button>
-                    
-                    {/* Glassmorphic sweep reflection */}
-                    <motion.div
-                      variants={{
-                        initial: { x: "-100%" },
-                        hover: { x: "100%" }
-                      }}
-                      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 pointer-events-none z-10"
-                    />
-                  </div>
+                <motion.div key={product.id} variants={cardVariants}>
+                  <TiltCard
+                    className="group flex flex-col overflow-hidden rounded-[24px] bg-zinc-900/40 border border-white/5 shadow-sm transition-all duration-300 hover:border-white/10 hover:shadow-lg cursor-pointer relative"
+                    onClick={() => setSelectedProduct(product)}
+                  >
+                    {/* Image wrapper */}
+                    <div className="relative aspect-square w-full overflow-hidden bg-zinc-950/60 p-4 flex items-center justify-center">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        loading="lazy"
+                        className="max-h-[90%] max-w-[90%] object-contain transition-transform duration-500 group-hover:scale-105"
+                      />
+                      
+                      {/* Floating circular shop/enquire CTA */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEnquire(product.name);
+                        }}
+                        className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer z-10"
+                      >
+                        <ShoppingCart className="h-3.5 w-3.5" />
+                      </button>
+                      
+                      {/* Glassmorphic sweep reflection */}
+                      <motion.div
+                        variants={{
+                          initial: { x: "-100%" },
+                          hover: { x: "100%" }
+                        }}
+                        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 pointer-events-none z-10"
+                      />
+                    </div>
 
-                  {/* Body Content */}
-                  <div className="flex flex-col p-3.5 pt-3">
-                    <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-wider mb-0.5">
-                      {product.category}
-                    </span>
-                    <h3 className="font-sans text-xs font-semibold text-zinc-800 leading-tight line-clamp-1 group-hover:text-black transition-colors">
-                      {product.name}
-                    </h3>
-                    <span className="text-sm font-extrabold text-zinc-950 mt-1">
-                      ${product.price}
-                    </span>
-                  </div>
-                </TiltCard>
+                    {/* Body Content */}
+                    <div className="flex flex-col p-3.5 pt-3">
+                      <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-wider mb-0.5">
+                        {product.category}
+                      </span>
+                      <h3 className="font-sans text-xs font-semibold text-white/90 leading-tight line-clamp-1 group-hover:text-white transition-colors">
+                        {product.name}
+                      </h3>
+                      <span className="text-sm font-bold text-[#B287FF] mt-1">
+                        ${product.price}
+                      </span>
+                    </div>
+                  </TiltCard>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           ) : (
             /* No Results State */
             <div className="flex flex-col items-center justify-center py-20 text-center">
-              <div className="grid h-16 w-16 place-items-center rounded-full bg-lightgray mb-4 text-ink-soft">
+              <div className="grid h-16 w-16 place-items-center rounded-full bg-white/5 mb-4 text-zinc-400">
                 <Info className="h-6 w-6" />
               </div>
-              <h3 className="font-display text-lg font-bold text-ink">No products found</h3>
-              <p className="mt-1 text-sm text-ink-soft max-w-xs">
+              <h3 className="font-display text-lg font-bold text-white">No products found</h3>
+              <p className="mt-1 text-sm text-zinc-400 max-w-xs">
                 We couldn't find any products matching your search terms. Try selecting a different category or clearing filters.
               </p>
               <button
@@ -445,15 +486,16 @@ function ProductsPage() {
                   setSearchQuery("");
                   setSelectedCategory("All");
                 }}
-                className="mt-4 text-xs font-semibold underline text-ink hover:text-black cursor-pointer"
+                className="mt-4 text-xs font-semibold underline text-zinc-300 hover:text-white cursor-pointer"
               >
                 Clear all filters
               </button>
             </div>
           )}
         </div>
-        <Footer />
-      </div>
+      </motion.main>
+
+      <Footer />
 
       {/* Product Details Modal / Drawer Mockup Layout */}
       <AnimatePresence>
@@ -695,27 +737,6 @@ function ProductsPage() {
           </div>
         )}
       </AnimatePresence>
-
-      {/* Sticky Mobile Bottom Navigation Dock */}
-      <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[85%] max-w-[360px] h-14 rounded-full bg-[#121214]/90 backdrop-blur-xl border border-white/10 ring-1 ring-white/5 shadow-[0_10px_30px_rgba(0,0,0,0.5)] flex items-center justify-around px-4 z-40">
-        <Link to="/" className="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white transition-colors">
-          <Home className="h-5 w-5" />
-          <span className="text-[8px] font-bold uppercase tracking-wider">Home</span>
-        </Link>
-        <Link to="/products" className="flex flex-col items-center gap-0.5 text-[#B287FF] transition-colors relative">
-          <ShoppingCart className="h-5 w-5" />
-          <span className="text-[8px] font-bold uppercase tracking-wider">Shop</span>
-          <span className="absolute -bottom-1.5 w-1 h-1 rounded-full bg-[#B287FF]" />
-        </Link>
-        <Link to="/categories" className="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white transition-colors">
-          <SlidersHorizontal className="h-5 w-5" />
-          <span className="text-[8px] font-bold uppercase tracking-wider">Explore</span>
-        </Link>
-        <Link to="/contact" className="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white transition-colors">
-          <User className="h-5 w-5" />
-          <span className="text-[8px] font-bold uppercase tracking-wider">Contact</span>
-        </Link>
-      </div>
-    </motion.main>
+    </div>
   );
 }

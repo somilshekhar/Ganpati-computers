@@ -3,7 +3,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Phone, Mail, MapPin, ArrowRight } from "lucide-react";
+import { Phone, Mail, MapPin, ArrowRight, Sparkle } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import logo from "@/assets/ChatGPT Image May 30, 2026, 01_13_25 AM.png";
 
@@ -92,28 +92,43 @@ function NavHeader() {
                   animate="open"
                   exit="closed"
                   variants={mobileMenuVariants}
-                  className="fixed inset-y-0 right-0 w-full sm:w-[420px] h-screen bg-[#121214]/95 backdrop-blur-3xl border-l border-white/10 shadow-2xl z-[100] flex flex-col justify-between p-6 sm:p-8 text-white overflow-y-auto will-change-transform"
+                  className="fixed inset-y-0 right-0 w-full sm:w-[420px] h-screen bg-[#0E0E10]/95 backdrop-blur-3xl border-l border-white/10 shadow-2xl z-[100] flex flex-col justify-between p-6 sm:p-8 text-white overflow-y-auto will-change-transform relative"
                 >
+                  {/* Backdrop video loop - purely decorative */}
+                  <video
+                    src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260507_150203_44a5bd32-516a-47ce-a077-8acbf9aa8991.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover opacity-15 mix-blend-screen pointer-events-none"
+                    style={{ zIndex: 0 }}
+                  />
+                  {/* Dark gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-[#0E0E10]/40 via-transparent to-[#0E0E10]/80 pointer-events-none" style={{ zIndex: 0 }} />
+                  {/* Noise texture overlay - pointer-events-none so it doesn't block clicks */}
+                  <div className="absolute inset-0 pointer-events-none noise-overlay opacity-60" style={{ zIndex: 0 }} />
+
                   {/* Header Row: Logo & Close Button */}
-                  <div className="flex items-center justify-between w-full border-b border-white/5 pb-4">
+                  <div className="relative z-10 flex items-center justify-between w-full border-b border-white/5 pb-4">
                     <div className="flex items-center gap-3">
                       <img
                         src={logo}
                         alt="Ganpati Computers Logo"
                         className="h-10 w-10 object-cover rounded-full shadow-sm"
                       />
-                    <div className="flex items-center gap-2">
-                      <span className="text-base font-extrabold tracking-tight text-white uppercase">Ganpati</span>
-                      <span className="h-3.5 w-[1px] bg-white/20" />
-                      <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">Computers</span>
-                    </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-base font-extrabold tracking-tight text-white uppercase">Ganpati</span>
+                        <span className="h-3.5 w-[1px] bg-white/20" />
+                        <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">Computers</span>
+                      </div>
                     </div>
                     {/* Close button */}
                     <HamburgerButton isOpen={true} toggle={() => setIsOpen(false)} />
                   </div>
 
                   {/* Nav Links with Descriptions */}
-                  <div className="flex-1 flex flex-col justify-center py-8">
+                  <div className="relative z-10 flex-1 flex flex-col justify-center py-8">
                     <nav className="flex flex-col gap-6">
                       {NAV.map((n, index) => {
                         const descriptions = {
@@ -136,8 +151,9 @@ function NavHeader() {
                               onClick={() => setIsOpen(false)}
                               className="flex items-start gap-4 hover:translate-x-1 transition-transform duration-300"
                             >
-                              <span className="font-sans text-xs font-bold tracking-widest text-[#B287FF] mt-1.5">
+                              <span className="font-sans text-xs font-bold tracking-widest text-[#B287FF] mt-1.5 flex items-center gap-1.5">
                                 {String(index + 1).padStart(2, "0")}
+                                <Sparkle className="h-2.5 w-2.5 opacity-0 group-hover:opacity-100 group-hover:rotate-45 transition-all duration-300 text-[#B287FF]" />
                               </span>
                               <div className="flex flex-col">
                                 <span className="font-display text-xl sm:text-2xl font-black uppercase tracking-tight text-white group-hover:text-[#B287FF] transition-colors duration-300">
@@ -157,7 +173,7 @@ function NavHeader() {
                   {/* Drawer Footer Actions and Contact Info */}
                   <motion.div
                     variants={bottomInfoVariants}
-                    className="border-t border-white/5 pt-6 flex flex-col gap-6"
+                    className="relative z-10 border-t border-white/5 pt-6 flex flex-col gap-6"
                   >
                     {/* Quick CTA */}
                     <a
@@ -276,7 +292,7 @@ const HamburgerButton = ({ isOpen, toggle }: { isOpen: boolean; toggle: () => vo
   );
 };
 
-const mobileMenuVariants = {
+const mobileMenuVariants: any = {
   closed: {
     x: "100%",
     transition: {
@@ -298,12 +314,12 @@ const mobileMenuVariants = {
   },
 };
 
-const mobileItemVariants = {
+const mobileItemVariants: any = {
   closed: { opacity: 0, x: 20, transition: { duration: 0.25, ease: "easeOut" } },
   open: { opacity: 1, x: 0, transition: { duration: 0.35, ease: "easeOut" } },
 };
 
-const bottomInfoVariants = {
+const bottomInfoVariants: any = {
   closed: { opacity: 0, y: 15 },
   open: { opacity: 1, y: 0, transition: { delay: 0.25, duration: 0.4 } },
 };
