@@ -32,19 +32,26 @@ export default defineConfig(async ({ command, mode }) => {
     try {
       const nitroMod = await import("nitro/vite");
       if (nitroMod?.nitro) {
+        const isVercel = !!process.env.VERCEL;
         plugins.push(
-          nitroMod.nitro({
-            preset: "cloudflare-module",
-            output: {
-              dir: "dist",
-              serverDir: "dist/server",
-              publicDir: "dist/client",
-            },
-            cloudflare: {
-              nodeCompat: true,
-              deployConfig: true,
-            }
-          })
+          nitroMod.nitro(
+            isVercel
+              ? {
+                  preset: "vercel",
+                }
+              : {
+                  preset: "cloudflare-module",
+                  output: {
+                    dir: "dist",
+                    serverDir: "dist/server",
+                    publicDir: "dist/client",
+                  },
+                  cloudflare: {
+                    nodeCompat: true,
+                    deployConfig: true,
+                  }
+                }
+          )
         );
       }
     } catch (e) {
