@@ -218,10 +218,10 @@ function ProductsPage() {
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="relative min-h-screen pt-1.5 px-3 pb-3 md:pt-2 md:px-6 md:pb-6 lg:min-h-screen lg:pt-2 lg:px-6 lg:pb-6"
+      className="relative min-h-screen p-0 md:pt-2 md:px-6 md:pb-6 lg:min-h-screen lg:pt-2 lg:px-6 lg:pb-6"
     >
       <Background />
-      <div className="mx-auto flex min-h-[calc(100vh-1.5rem)] max-w-[1400px] flex-col rounded-[28px] bg-white/70 backdrop-blur-xl shadow-glass ring-1 ring-white/60 md:rounded-[32px] p-1 md:p-2">
+      <div className="mx-auto flex min-h-screen md:min-h-[calc(100vh-1.5rem)] max-w-[1400px] flex-col rounded-none md:rounded-[32px] bg-white/70 backdrop-blur-xl shadow-glass ring-0 md:ring-1 ring-white/60 p-0 md:p-1 lg:p-2">
         <Navbar />
 
         <div className="flex-1 px-4 py-8 md:px-8">

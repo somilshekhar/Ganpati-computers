@@ -4,7 +4,7 @@ import logo from "@/assets/ChatGPT Image May 30, 2026, 01_13_25 AM.png";
 
 export function Footer() {
   return (
-    <footer className="w-full bg-[#0E0E0E] text-white pt-16 pb-6 px-6 md:px-12 mt-16 rounded-t-[28px] rounded-b-[20px] md:rounded-t-[32px] md:rounded-b-[28px] overflow-hidden relative border border-white/5">
+    <footer className="w-full bg-[#0E0E0E] text-white pt-16 pb-6 px-6 md:px-12 mt-16 rounded-t-[28px] rounded-b-none md:rounded-t-[32px] md:rounded-b-[28px] overflow-hidden relative border border-white/5">
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 pb-12">
         {/* Left Column: Brand description */}
         <div className="md:col-span-5 flex flex-col gap-4">
@@ -15,13 +15,10 @@ export function Footer() {
               alt="Ganpati Computers Logo"
               className="h-10 w-10 object-cover rounded-full shadow-sm"
             />
-            <div className="flex flex-col leading-none">
-              <span className="font-display font-extrabold text-sm tracking-tight text-white uppercase">
-                Ganpati
-              </span>
-              <span className="font-display font-bold text-[10px] text-zinc-500 uppercase tracking-widest mt-0.5">
-                Computers
-              </span>
+            <div className="flex items-center gap-2">
+              <span className="text-base font-extrabold tracking-tight text-white uppercase">Ganpati</span>
+              <span className="h-3.5 w-[1px] bg-white/20" />
+              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">Computers</span>
             </div>
           </div>
           <p className="text-zinc-400 text-sm max-w-sm leading-relaxed mt-2">

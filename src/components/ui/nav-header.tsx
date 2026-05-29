@@ -45,7 +45,7 @@ function NavHeader() {
     <div className="relative ml-auto lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:ml-0 w-fit z-20">
       {/* Desktop view: Div-based layout with state-based text color tracking */}
       <div
-        className="hidden lg:flex relative mx-auto w-fit rounded-full border border-black/10 bg-white/60 backdrop-blur-md p-1 shadow-sm ring-1 ring-white/40 items-center"
+        className="hidden lg:flex relative mx-auto w-fit rounded-full border border-white/10 bg-black/30 backdrop-blur-md p-1 shadow-sm ring-1 ring-white/10 items-center"
         onMouseLeave={() => {
           setPosition((pv) => ({ ...pv, opacity: 0 }));
           setHoveredTab(null);
@@ -75,89 +75,115 @@ function NavHeader() {
         {mounted && createPortal(
           <AnimatePresence>
             {isOpen && (
-              <motion.div
-                initial="closed"
-                animate="open"
-                exit="closed"
-                variants={mobileMenuVariants}
-                className="fixed inset-0 w-screen h-screen bg-white/95 backdrop-blur-3xl z-[100] flex flex-col justify-between p-6 sm:p-12 text-ink overflow-y-auto will-change-transform"
-              >
-                {/* Top Row: Logo branding & Close Button */}
-                <div className="flex items-center justify-between w-full z-10">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={logo}
-                      alt="Ganpati Computers Logo"
-                      className="h-10 w-10 object-cover rounded-full shadow-sm"
-                    />
-                    <div className="flex flex-col leading-none">
-                      <span className="font-display font-extrabold text-sm tracking-tight text-ink uppercase">
-                        Ganpati
-                      </span>
-                      <span className="font-display font-bold text-[10px] text-ink-soft uppercase tracking-widest mt-0.5">
-                        Computers
-                      </span>
-                    </div>
-                  </div>
-                  {/* Close button at the same position in the portal */}
-                  <HamburgerButton isOpen={true} toggle={() => setIsOpen(false)} />
-                </div>
-
-                {/* Main Nav Links */}
-                <div className="flex-1 flex flex-col justify-center my-8 z-10">
-                  <nav className="flex flex-col gap-6 sm:gap-8">
-                    {NAV.map((n, index) => (
-                      <motion.div
-                        key={n.to}
-                        variants={mobileItemVariants}
-                        className="group flex items-baseline gap-4"
-                      >
-                        <span className="font-sans text-xs sm:text-sm font-bold opacity-30 select-none tracking-widest text-[#B287FF]">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                        <Link
-                          to={n.to}
-                          onClick={() => setIsOpen(false)}
-                          className="font-display text-3xl sm:text-5xl font-black uppercase tracking-tight text-ink hover:text-[#9D6DFF] transition-colors duration-300 flex items-center gap-2"
-                        >
-                          {n.label}
-                          <ArrowRight className="h-5 w-5 sm:h-6 sm:w-6 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-[#9D6DFF]" />
-                        </Link>
-                      </motion.div>
-                    ))}
-                  </nav>
-                </div>
-
-                {/* Bottom Row: Contact & Address */}
+              <>
+                {/* Backdrop Overlay */}
                 <motion.div
-                  variants={bottomInfoVariants}
-                  className="border-t border-black/10 pt-6 grid grid-cols-1 sm:grid-cols-2 gap-6 text-ink-soft z-10"
-                >
-                  <div className="flex flex-col gap-2">
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-zinc-500">Contact Details</span>
-                    <a href="tel:+919876543210" className="flex items-center gap-2 hover:text-ink transition-colors text-xs sm:text-sm font-semibold">
-                      <Phone className="h-3.5 w-3.5 text-[#9D6DFF]" />
-                      +91 98765 43210
-                    </a>
-                    <a href="mailto:info@ganpaticomputers.com" className="flex items-center gap-2 hover:text-ink transition-colors text-xs sm:text-sm font-semibold">
-                      <Mail className="h-3.5 w-3.5 text-[#9D6DFF]" />
-                      info@ganpaticomputers.com
-                    </a>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-zinc-500">Store Location</span>
-                    <p className="flex items-start gap-2 text-xs sm:text-sm leading-relaxed">
-                      <MapPin className="h-3.5 w-3.5 text-[#9D6DFF] shrink-0 mt-0.5" />
-                      Ganpati Computers, Main Market Road,<br />Opposite Central Bank, City Center
-                  </p>
-                  </div>
-                </motion.div>
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  onClick={() => setIsOpen(false)}
+                  className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[90]"
+                />
 
-                {/* Giant background watermark */}
-                <div className="absolute right-0 bottom-0 pointer-events-none select-none text-[25vw] font-black uppercase tracking-tighter leading-none text-black/[0.015] -mb-8 -mr-8 z-0">
-                  Ganpati
-                </div>
-              </motion.div>
+                {/* Sliding Drawer Panel */}
+                <motion.div
+                  initial="closed"
+                  animate="open"
+                  exit="closed"
+                  variants={mobileMenuVariants}
+                  className="fixed inset-y-0 right-0 w-full sm:w-[420px] h-screen bg-[#121214]/95 backdrop-blur-3xl border-l border-white/10 shadow-2xl z-[100] flex flex-col justify-between p-6 sm:p-8 text-white overflow-y-auto will-change-transform"
+                >
+                  {/* Header Row: Logo & Close Button */}
+                  <div className="flex items-center justify-between w-full border-b border-white/5 pb-4">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={logo}
+                        alt="Ganpati Computers Logo"
+                        className="h-10 w-10 object-cover rounded-full shadow-sm"
+                      />
+                    <div className="flex items-center gap-2">
+                      <span className="text-base font-extrabold tracking-tight text-white uppercase">Ganpati</span>
+                      <span className="h-3.5 w-[1px] bg-white/20" />
+                      <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-zinc-400">Computers</span>
+                    </div>
+                    </div>
+                    {/* Close button */}
+                    <HamburgerButton isOpen={true} toggle={() => setIsOpen(false)} />
+                  </div>
+
+                  {/* Nav Links with Descriptions */}
+                  <div className="flex-1 flex flex-col justify-center py-8">
+                    <nav className="flex flex-col gap-6">
+                      {NAV.map((n, index) => {
+                        const descriptions = {
+                          "/": "Return to the main page and highlights",
+                          "/products": "Browse laptops, desktop rigs, & components",
+                          "/categories": "Shop by category and view inventory count",
+                          "/about": "Learn about our warranty & core engineers",
+                          "/contact": "Inquire about custom PCs or diagnostics",
+                        };
+                        const desc = descriptions[n.to] || "";
+
+                        return (
+                          <motion.div
+                            key={n.to}
+                            variants={mobileItemVariants}
+                            className="group"
+                          >
+                            <Link
+                              to={n.to}
+                              onClick={() => setIsOpen(false)}
+                              className="flex items-start gap-4 hover:translate-x-1 transition-transform duration-300"
+                            >
+                              <span className="font-sans text-xs font-bold tracking-widest text-[#B287FF] mt-1.5">
+                                {String(index + 1).padStart(2, "0")}
+                              </span>
+                              <div className="flex flex-col">
+                                <span className="font-display text-xl sm:text-2xl font-black uppercase tracking-tight text-white group-hover:text-[#B287FF] transition-colors duration-300">
+                                  {n.label}
+                                </span>
+                                <span className="text-[11px] text-zinc-400 group-hover:text-zinc-300 transition-colors mt-0.5">
+                                  {desc}
+                                </span>
+                              </div>
+                            </Link>
+                          </motion.div>
+                        );
+                      })}
+                    </nav>
+                  </div>
+
+                  {/* Drawer Footer Actions and Contact Info */}
+                  <motion.div
+                    variants={bottomInfoVariants}
+                    className="border-t border-white/5 pt-6 flex flex-col gap-6"
+                  >
+                    {/* Quick CTA */}
+                    <a
+                      href="tel:+919876543210"
+                      className="w-full flex h-11 items-center justify-center gap-2 rounded-full bg-white text-ink text-xs font-bold uppercase transition-all hover:bg-zinc-200"
+                    >
+                      <Phone className="h-4 w-4 text-ink" />
+                      Call Support
+                    </a>
+
+                    {/* Contact Details */}
+                    <div className="grid grid-cols-1 gap-4 text-xs text-zinc-400">
+                      <div className="flex flex-col gap-1.5">
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-zinc-500">Store Hours</span>
+                        <p className="text-[11px] text-zinc-300">Mon - Sat: 10:00 AM - 8:00 PM | Sun: Closed</p>
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-zinc-500">Contact Details</span>
+                        <a href="mailto:info@ganpaticomputers.com" className="hover:text-white transition-colors text-[11px] text-zinc-300">
+                          info@ganpaticomputers.com
+                        </a>
+                      </div>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              </>
             )}
           </AnimatePresence>,
           document.body
@@ -196,7 +222,7 @@ const Tab = ({
         onMouseEnter();
       }}
       className={`relative z-10 block cursor-pointer text-xs uppercase transition-colors duration-200 ${
-        isHovered ? "text-white" : "text-[#0E0E0E]"
+        isHovered ? "text-black" : "text-zinc-400 hover:text-white"
       }`}
     >
       <Link
@@ -213,7 +239,7 @@ const Cursor = ({ position }: { position: any }) => {
   return (
     <motion.div
       animate={position}
-      className="absolute z-0 h-5 lg:h-[28px] rounded-full bg-black top-[4px] lg:top-[2px]"
+      className="absolute z-0 h-5 lg:h-[28px] rounded-full bg-white top-[4px] lg:top-[2px]"
     />
   );
 };
@@ -224,25 +250,25 @@ const HamburgerButton = ({ isOpen, toggle }: { isOpen: boolean; toggle: () => vo
       onClick={toggle}
       className={`relative flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 active:scale-95 cursor-pointer z-[100] shadow-sm ${
         isOpen 
-          ? "border-black/10 bg-black/5 text-ink hover:bg-black/10" 
-          : "border-black/5 bg-white/70 text-ink backdrop-blur-md hover:bg-zinc-100"
+          ? "border-white/10 bg-white/10 text-white hover:bg-white/20" 
+          : "border-white/10 bg-black/40 text-white backdrop-blur-md hover:bg-white/10"
       }`}
       aria-label="Toggle Menu"
     >
       <div className="relative flex h-3 w-4 flex-col justify-between items-center">
         <span
-          className={`h-[1px] w-4 rounded bg-ink transition-transform duration-300 ${
-            isOpen ? "translate-y-[5.5px] rotate-45" : ""
+          className={`h-[1px] w-4 rounded transition-transform duration-300 ${
+            isOpen ? "translate-y-[5.5px] rotate-45 bg-white" : "bg-white"
           }`}
         />
         <span
-          className={`h-[1px] w-4 rounded bg-ink transition-opacity duration-300 ${
-            isOpen ? "opacity-0" : "opacity-100"
+          className={`h-[1px] w-4 rounded transition-opacity duration-300 ${
+            isOpen ? "opacity-0 bg-white" : "opacity-100 bg-white"
           }`}
         />
         <span
-          className={`h-[1px] w-4 rounded bg-ink transition-transform duration-300 ${
-            isOpen ? "-translate-y-[5.5px] -rotate-45" : ""
+          className={`h-[1px] w-4 rounded transition-transform duration-300 ${
+            isOpen ? "-translate-y-[5.5px] -rotate-45 bg-white" : "bg-white"
           }`}
         />
       </div>
@@ -252,36 +278,34 @@ const HamburgerButton = ({ isOpen, toggle }: { isOpen: boolean; toggle: () => vo
 
 const mobileMenuVariants = {
   closed: {
-    opacity: 0,
-    y: "-100%",
+    x: "100%",
     transition: {
-      duration: 0.5,
-      ease: [0.22, 1, 0.36, 1],
+      duration: 0.45,
+      ease: [0.16, 1, 0.3, 1],
       when: "afterChildren",
-      staggerChildren: 0.05,
+      staggerChildren: 0.04,
       staggerDirection: -1,
     },
   },
   open: {
-    opacity: 1,
-    y: 0,
+    x: 0,
     transition: {
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1],
-      delayChildren: 0.15,
-      staggerChildren: 0.08,
+      duration: 0.5,
+      ease: [0.16, 1, 0.3, 1],
+      delayChildren: 0.12,
+      staggerChildren: 0.06,
     },
   },
 };
 
 const mobileItemVariants = {
-  closed: { opacity: 0, y: -20 },
-  open: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+  closed: { opacity: 0, x: 20, transition: { duration: 0.25, ease: "easeOut" } },
+  open: { opacity: 1, x: 0, transition: { duration: 0.35, ease: "easeOut" } },
 };
 
 const bottomInfoVariants = {
-  closed: { opacity: 0, y: 20 },
-  open: { opacity: 1, y: 0, transition: { delay: 0.35, duration: 0.4 } },
+  closed: { opacity: 0, y: 15 },
+  open: { opacity: 1, y: 0, transition: { delay: 0.25, duration: 0.4 } },
 };
 
 export default NavHeader;
