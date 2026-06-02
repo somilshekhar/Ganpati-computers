@@ -134,7 +134,7 @@ function CategoriesPage() {
                 {/* Top Row: Label and spin-hover Arrow button */}
                 <div className="relative z-10 flex justify-between items-start w-full">
                   <div className="flex items-center gap-2">
-                    <Sparkle className="h-3 w-3 text-white/50 group-hover:text-[#B287FF] transition-colors" strokeWidth={1.5} />
+                    <Sparkle className="h-3 w-3 text-white/50 group-hover:text-[#3D3D3F] transition-colors" strokeWidth={1.5} />
                     <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">
                       {cat.label}
                     </span>
@@ -148,13 +148,13 @@ function CategoriesPage() {
                 {/* Bottom Row: Text content */}
                 <div className="relative z-10 space-y-2 mt-20 md:mt-24">
                   <div className="flex items-center gap-2">
-                    <Icon className="h-4 w-4 text-[#B287FF]" strokeWidth={2} />
+                    <Icon className="h-4 w-4 text-[#3D3D3F]" strokeWidth={2} />
                     <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
                       {cat.count} Options Available
                     </span>
                   </div>
 
-                  <h3 className="font-display text-2xl md:text-3xl font-extrabold tracking-tight text-white group-hover:text-[#B287FF] transition-colors">
+                  <h3 className="font-display text-2xl md:text-3xl font-extrabold tracking-tight text-white group-hover:text-[#3D3D3F] transition-colors">
                     {cat.name}
                   </h3>
 

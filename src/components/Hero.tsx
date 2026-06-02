@@ -37,7 +37,7 @@ export function Hero() {
         className="relative overflow-hidden rounded-[28px] bg-hero-dark p-7 md:rounded-[32px] md:p-10 lg:col-span-6 lg:h-full min-h-[560px] shadow-card"
         style={{ perspective: 1200 }}
       >
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#B287FF]">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/50">
           Welcome to Ganpati Computers
         </p>
 
@@ -128,8 +128,7 @@ export function Hero() {
             Icon={Headphones}
             gradient="bg-lime-gradient"
             glow="hover:shadow-glow-lime"
-            iconTint="text-ink"
-            textDark
+            iconTint="text-white"
             delay={0.45}
           />
         </div>

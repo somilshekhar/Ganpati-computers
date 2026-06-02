@@ -136,11 +136,11 @@ function NavHeader() {
                               onClick={() => setIsOpen(false)}
                               className="flex items-start gap-4 hover:translate-x-1 transition-transform duration-300"
                             >
-                              <span className="font-sans text-xs font-bold tracking-widest text-[#B287FF] mt-1.5">
+                              <span className="font-sans text-xs font-bold tracking-widest text-[#3D3D3F] mt-1.5">
                                 {String(index + 1).padStart(2, "0")}
                               </span>
                               <div className="flex flex-col">
-                                <span className="font-display text-xl sm:text-2xl font-black uppercase tracking-tight text-white group-hover:text-[#B287FF] transition-colors duration-300">
+                                <span className="font-display text-xl sm:text-2xl font-black uppercase tracking-tight text-white group-hover:text-[#3D3D3F] transition-colors duration-300">
                                   {n.label}
                                 </span>
                                 <span className="text-[11px] text-zinc-400 group-hover:text-zinc-300 transition-colors mt-0.5">

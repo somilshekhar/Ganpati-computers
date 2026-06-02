@@ -194,8 +194,8 @@ const GALLERY_IMAGES: Record<string, string[]> = {
 
 const SWATCHES = [
   { name: "SG", color: "#4A5568", label: "Space Gray" },
-  { name: "LP", color: "#B287FF", label: "Lilac Purple" },
-  { name: "LG", color: "#B7F33B", label: "Lime Green" },
+  { name: "LP", color: "#3D3D3F", label: "Lilac Purple" },
+  { name: "LG", color: "#2C2C2E", label: "Lime Green" },
   { name: "PS", color: "#E2E8F0", label: "Platinum Silver" },
   { name: "OB", color: "#1A202C", label: "Obsidian Black" },
 ];
@@ -317,7 +317,7 @@ function ProductsPage() {
             <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent pointer-events-none" />
 
             <div className="relative z-10 flex-grow space-y-3 text-left">
-              <span className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.2em] text-[#B287FF] bg-[#B287FF]/10 px-2.5 py-1 rounded-full border border-[#B287FF]/20">
+              <span className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.2em] text-[#3D3D3F] bg-[#3D3D3F]/10 px-2.5 py-1 rounded-full border border-[#3D3D3F]/20">
                 <Sparkle className="h-2.5 w-2.5 animate-pulse" />
                 Summer Offer
               </span>
@@ -390,7 +390,7 @@ function ProductsPage() {
                   onClick={() => setSelectedCategory(cat)}
                   className={`h-9 px-5 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap border shrink-0 ${
                     isActive
-                      ? "bg-[#B287FF] text-black border-[#B287FF] shadow-md"
+                      ? "bg-[#3D3D3F] text-black border-[#3D3D3F] shadow-md"
                       : "bg-white/5 text-zinc-400 border-white/5 hover:border-white/10 hover:text-white"
                   }`}
                 >
@@ -402,7 +402,7 @@ function ProductsPage() {
 
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-lg font-bold tracking-tight text-white uppercase flex items-center gap-2">
-              <Sparkle className="h-4 w-4 text-[#B287FF]" />
+              <Sparkle className="h-4 w-4 text-[#3D3D3F]" />
               {selectedCategory === "All" ? "New Arrivals" : selectedCategory}
             </h2>
             <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
@@ -463,7 +463,7 @@ function ProductsPage() {
                       <h3 className="font-sans text-xs font-semibold text-white/90 leading-tight line-clamp-1 group-hover:text-white transition-colors">
                         {product.name}
                       </h3>
-                      <span className="text-sm font-bold text-[#B287FF] mt-1">
+                      <span className="text-sm font-bold text-[#3D3D3F] mt-1">
                         ${product.price}
                       </span>
                     </div>
@@ -575,7 +575,7 @@ function ProductsPage() {
                       <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-10 h-1 bg-white/15 rounded-full" />
 
                       <div className="space-y-3 mt-1.5 overflow-y-auto pr-1">
-                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B287FF] block">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#3D3D3F] block">
                           {selectedProduct.category}
                         </span>
                         <h2 className="font-display text-2xl font-extrabold text-white tracking-tight leading-tight">
@@ -665,7 +665,7 @@ function ProductsPage() {
                             const label = labels[index] || `Spec ${index + 1}`;
                             return (
                               <div key={index} className="space-y-1">
-                                <span className="text-[10px] font-bold tracking-widest text-[#B287FF] uppercase block">
+                                <span className="text-[10px] font-bold tracking-widest text-[#3D3D3F] uppercase block">
                                   {label}
                                 </span>
                                 <p className="text-sm font-semibold text-white">

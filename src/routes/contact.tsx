@@ -116,7 +116,7 @@ function ContactPage() {
                 href="tel:+919876543210"
                 className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-all group"
               >
-                <div className="h-8 w-8 rounded-lg bg-[#B287FF]/10 text-[#B287FF] flex items-center justify-center">
+                <div className="h-8 w-8 rounded-lg bg-[#3D3D3F]/10 text-[#3D3D3F] flex items-center justify-center">
                   <Phone className="h-4 w-4" />
                 </div>
                 <div>
@@ -130,7 +130,7 @@ function ContactPage() {
                 href="mailto:support@ganpaticomputers.com"
                 className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-all group"
               >
-                <div className="h-8 w-8 rounded-lg bg-[#B287FF]/10 text-[#B287FF] flex items-center justify-center">
+                <div className="h-8 w-8 rounded-lg bg-[#3D3D3F]/10 text-[#3D3D3F] flex items-center justify-center">
                   <Mail className="h-4 w-4" />
                 </div>
                 <div>
@@ -141,7 +141,7 @@ function ContactPage() {
 
               {/* Location */}
               <div className="flex items-center gap-3 p-2 rounded-xl">
-                <div className="h-8 w-8 rounded-lg bg-[#B287FF]/10 text-[#B287FF] flex items-center justify-center">
+                <div className="h-8 w-8 rounded-lg bg-[#3D3D3F]/10 text-[#3D3D3F] flex items-center justify-center">
                   <MapPin className="h-4 w-4" />
                 </div>
                 <div>
@@ -155,7 +155,7 @@ function ContactPage() {
           {/* Card 2: Send Message Form (Col 2-3, Row 1) */}
           <div className="lg:col-span-2 relative rounded-2xl bg-zinc-950 border border-white/5 p-6 md:p-8 flex flex-col justify-between overflow-hidden noise-overlay min-h-[380px]">
             <div className="relative z-10 flex items-center gap-2 mb-6">
-              <Sparkle className="h-3 w-3 text-[#B287FF]" strokeWidth={1.5} />
+              <Sparkle className="h-3 w-3 text-[#3D3D3F]" strokeWidth={1.5} />
               <span className="uppercase tracking-[0.22em] text-[11px] font-bold text-white/70">
                 Send a Message
               </span>
@@ -166,7 +166,7 @@ function ContactPage() {
                 {/* Name */}
                 <div className="space-y-1.5">
                   <label htmlFor="name" className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest">
-                    Your Name <span className="text-[#B287FF]">*</span>
+                    Your Name <span className="text-[#3D3D3F]">*</span>
                   </label>
                   <input
                     type="text"
@@ -176,14 +176,14 @@ function ContactPage() {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="Somil Shekhar"
-                    className="w-full h-11 px-4 rounded-xl border border-white/10 bg-white/5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-[#B287FF] focus:border-[#B287FF] transition-all"
+                    className="w-full h-11 px-4 rounded-xl border border-white/10 bg-white/5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-[#3D3D3F] focus:border-[#3D3D3F] transition-all"
                   />
                 </div>
 
                 {/* Email */}
                 <div className="space-y-1.5">
                   <label htmlFor="email" className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest">
-                    Your Email <span className="text-[#B287FF]">*</span>
+                    Your Email <span className="text-[#3D3D3F]">*</span>
                   </label>
                   <input
                     type="email"
@@ -193,7 +193,7 @@ function ContactPage() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="somil@example.com"
-                    className="w-full h-11 px-4 rounded-xl border border-white/10 bg-white/5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-[#B287FF] focus:border-[#B287FF] transition-all"
+                    className="w-full h-11 px-4 rounded-xl border border-white/10 bg-white/5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-[#3D3D3F] focus:border-[#3D3D3F] transition-all"
                   />
                 </div>
               </div>
@@ -211,7 +211,7 @@ function ContactPage() {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="+91 99999 99999"
-                    className="w-full h-11 px-4 rounded-xl border border-white/10 bg-white/5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-[#B287FF] focus:border-[#B287FF] transition-all"
+                    className="w-full h-11 px-4 rounded-xl border border-white/10 bg-white/5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-[#3D3D3F] focus:border-[#3D3D3F] transition-all"
                   />
                 </div>
 
@@ -225,7 +225,7 @@ function ContactPage() {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full h-11 px-4 rounded-xl border border-white/10 bg-[#121214] text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#B287FF] transition-all cursor-pointer"
+                    className="w-full h-11 px-4 rounded-xl border border-white/10 bg-[#121214] text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#3D3D3F] transition-all cursor-pointer"
                   >
                     <option value="PC Customization">Custom PC Config</option>
                     <option value="Product Sourcing">Component Availability</option>
@@ -238,7 +238,7 @@ function ContactPage() {
               {/* Message */}
               <div className="space-y-1.5">
                 <label htmlFor="message" className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest">
-                  Message <span className="text-[#B287FF]">*</span>
+                  Message <span className="text-[#3D3D3F]">*</span>
                 </label>
                 <textarea
                   id="message"
@@ -248,7 +248,7 @@ function ContactPage() {
                   value={formData.message}
                   onChange={handleChange}
                   placeholder="Tell us what you're looking for..."
-                  className="w-full p-4 rounded-xl border border-white/10 bg-white/5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-[#B287FF] focus:border-[#B287FF] transition-all resize-none"
+                  className="w-full p-4 rounded-xl border border-white/10 bg-white/5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-[#3D3D3F] focus:border-[#3D3D3F] transition-all resize-none"
                 />
               </div>
 
@@ -275,7 +275,7 @@ function ContactPage() {
             <div className="space-y-2.5 text-xs text-white/90">
               <div className="flex justify-between items-center py-1">
                 <span className="flex items-center gap-1.5">
-                  <Clock className="h-3.5 w-3.5 text-[#B287FF]" /> Mon - Sat:
+                  <Clock className="h-3.5 w-3.5 text-[#3D3D3F]" /> Mon - Sat:
                 </span>
                 <span className="font-bold">10:00 AM - 8:00 PM</span>
               </div>
@@ -308,8 +308,8 @@ function ContactPage() {
             <div className="h-2" />
             
             <div className="relative z-10 text-center flex flex-col items-center">
-              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#B287FF] bg-[#B287FF]/10 px-3 py-1 rounded-full flex items-center gap-1 mb-2">
-                <Cpu className="h-3.5 w-3.5 text-[#B287FF] animate-spin" /> Priority Line
+              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#3D3D3F] bg-[#3D3D3F]/10 px-3 py-1 rounded-full flex items-center gap-1 mb-2">
+                <Cpu className="h-3.5 w-3.5 text-[#3D3D3F] animate-spin" /> Priority Line
               </span>
               <h3 className="text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight text-white leading-none select-none">
                 24h Support

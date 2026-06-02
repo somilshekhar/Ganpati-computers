@@ -40,7 +40,7 @@ function Index() {
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#B287FF]/15 blur-[80px]"
+            className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#3D3D3F]/15 blur-[80px]"
           />
           <motion.div
             animate={{
@@ -53,7 +53,7 @@ function Index() {
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="absolute bottom-[-10%] right-[-10%] w-[55%] h-[55%] rounded-full bg-[#B7F33B]/10 blur-[80px]"
+            className="absolute bottom-[-10%] right-[-10%] w-[55%] h-[55%] rounded-full bg-[#2C2C2E]/10 blur-[80px]"
           />
           <motion.div
             animate={{
