@@ -603,7 +603,7 @@ function ProductsPage() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 50, scale: 0.95 }}
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-4xl h-full md:h-auto md:max-h-[90vh] rounded-none md:rounded-3xl border border-zinc-200 dark:border-white/10 bg-background dark:bg-[#121214] text-foreground dark:text-white shadow-[0_24px_100px_rgba(0,0,0,0.8)] overflow-hidden z-10 flex flex-col md:grid md:grid-cols-12"
+              className="relative w-full max-w-4xl h-full md:h-auto md:max-h-[90vh] rounded-none md:rounded-3xl border border-zinc-200 dark:border-white/10 bg-background dark:bg-[#121214] text-foreground dark:text-white shadow-[0_24px_100px_rgba(0,0,0,0.8)] overflow-y-auto md:overflow-hidden z-10 flex flex-col md:grid md:grid-cols-12"
             >
               {/* Left Column: Visuals (Col span 5) */}
               <div className="md:col-span-5 flex flex-col bg-zinc-50 dark:bg-zinc-950 p-6 border-b md:border-b-0 md:border-r border-zinc-200 dark:border-white/10 relative justify-between">
@@ -628,7 +628,7 @@ function ProductsPage() {
                 </div>
 
                 {/* Main Image View */}
-                <div className="flex-grow min-h-[280px] max-h-[380px] flex items-center justify-center relative py-6">
+                <div className="flex-grow min-h-[180px] md:min-h-[280px] max-h-[240px] md:max-h-[380px] flex items-center justify-center relative py-6">
                   <img
                     src={activeImage || selectedProduct.image}
                     alt={selectedProduct.name}
@@ -663,7 +663,7 @@ function ProductsPage() {
               </div>
 
               {/* Right Column: Details & Specs (Col span 7) */}
-              <div className="md:col-span-7 flex flex-col p-6 md:p-8 justify-between overflow-y-auto md:max-h-[90vh]">
+              <div className="md:col-span-7 flex flex-col p-6 md:p-8 justify-between md:overflow-y-auto md:max-h-[90vh]">
                 
                 {/* Header Actions for Desktop */}
                 <div className="hidden md:flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-white/5 mb-6">
