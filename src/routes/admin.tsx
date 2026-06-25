@@ -153,7 +153,7 @@ function AdminPage() {
     setFormData({
       name: "",
       category: "Laptops",
-      price: 999,
+      price: 79999,
       description: "",
       spec1: "",
       spec2: "",
@@ -479,8 +479,7 @@ function AdminPage() {
                       <th className="py-4 px-6 w-16">Preview</th>
                       <th className="py-4 px-6">Name</th>
                       <th className="py-4 px-6 w-32">Category</th>
-                      <th className="py-4 px-6 w-32">Price (USD)</th>
-                      <th className="py-4 px-6 w-36">Formatted Price (INR)</th>
+                      <th className="py-4 px-6 w-48">Price (INR)</th>
                       <th className="py-4 px-6 w-24 text-right">Actions</th>
                     </tr>
                   </thead>
@@ -510,7 +509,6 @@ function AdminPage() {
                             {product.category}
                           </span>
                         </td>
-                        <td className="py-3 px-6 font-mono text-zinc-500 dark:text-zinc-400">${product.price.toLocaleString()}</td>
                         <td className="py-3 px-6 font-mono font-bold text-foreground dark:text-white">{formatPrice(product.price)}</td>
                         <td className="py-3 px-6 text-right">
                           <div className="flex items-center justify-end gap-1.5">
@@ -628,11 +626,11 @@ function AdminPage() {
                   </div>
                 </div>
 
-                {/* Base Price (USD) & Description */}
+                {/* Base Price (INR) & Description */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
                   <div className="space-y-1.5">
                     <label htmlFor="price" className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest block">
-                      Price in USD <span className="text-[#3D3D3F]">*</span>
+                      Price in INR <span className="text-[#3D3D3F]">*</span>
                     </label>
                     <input
                       type="number"
@@ -644,9 +642,9 @@ function AdminPage() {
                       onChange={handleFormChange}
                       className="w-full h-11 px-4 rounded-xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/5 text-sm focus:outline-none focus:ring-1 focus:ring-[#3D3D3F] focus:border-[#3D3D3F] transition-all font-mono"
                     />
-                    {/* Live INR Converter Preview */}
+                    {/* Live Price Preview */}
                     <div className="text-[9px] text-zinc-400 dark:text-zinc-500 font-mono pl-1">
-                      Convert preview: <span className="font-bold text-foreground dark:text-white">{formatPrice(formData.price)}</span>
+                      Preview: <span className="font-bold text-foreground dark:text-white">{formatPrice(formData.price)}</span>
                     </div>
                   </div>
 

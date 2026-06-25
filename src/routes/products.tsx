@@ -90,7 +90,7 @@ export const PRODUCTS: Product[] = [
     id: "lap-1",
     name: "AeroPro Ultrabook 14\"",
     category: "Laptops",
-    price: 1199,
+    price: 95920,
     description: "Premium magnesium alloy chassis with a stunning OLED display. Designed for professionals and students on the go.",
     specs: ["Intel Core Ultra 7", "16GB LPDDR5X RAM", "512GB NVMe SSD", "14\" 2.8K 120Hz OLED"],
     image: "https://images.unsplash.com/photo-1496181130204-755241544e35?w=600&auto=format&fit=crop&q=80",
@@ -99,7 +99,7 @@ export const PRODUCTS: Product[] = [
     id: "pc-1",
     name: "Vanguard Gaming PC",
     category: "Desktops",
-    price: 1899,
+    price: 151920,
     description: "Custom pre-built gaming powerhouse equipped with top-tier cooling and components to dominate any AAA game.",
     specs: ["AMD Ryzen 7 7800X3D", "RTX 4070 Ti Super 16GB", "32GB DDR5 RAM", "2TB NVMe Gen4 SSD"],
     image: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=600&auto=format&fit=crop&q=80",
@@ -108,7 +108,7 @@ export const PRODUCTS: Product[] = [
     id: "mon-1",
     name: "Apex 27\" QHD Gaming Monitor",
     category: "Accessories",
-    price: 349,
+    price: 27920,
     description: "Ultra-fast IPS panel with accurate colors and extreme refresh rate for butter-smooth visual gameplay.",
     specs: ["27\" QHD (2560x1440)", "180Hz Refresh Rate", "1ms Response Time", "HDR400 & G-Sync Comp."],
     image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600&auto=format&fit=crop&q=80",
@@ -117,7 +117,7 @@ export const PRODUCTS: Product[] = [
     id: "gpu-1",
     name: "NVIDIA RTX 4080 Super GPU",
     category: "Components",
-    price: 1099,
+    price: 87920,
     description: "Unleash ray-traced, AI-accelerated gaming and rendering capabilities. Massive cooling fins with triple silent fans.",
     specs: ["16GB GDDR6X VRAM", "Ada Lovelace Architecture", "DLSS 3.0 Support", "PCIe 4.0 Interface"],
     image: "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=600&auto=format&fit=crop&q=80",
@@ -126,7 +126,7 @@ export const PRODUCTS: Product[] = [
     id: "key-1",
     name: "G-Pro Mechanical Keyboard",
     category: "Accessories",
-    price: 129,
+    price: 10320,
     description: "Hot-swappable linear mechanical switches with double-shot PBT keycaps and full custom RGB backlighting.",
     specs: ["Linear Yellow Switches", "Hot-Swappable PCB", "Premium Coiled Cable", "Aluminum Top Plate"],
     image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&auto=format&fit=crop&q=80",
@@ -135,7 +135,7 @@ export const PRODUCTS: Product[] = [
     id: "mouse-1",
     name: "ErgoWave Wireless Mouse",
     category: "Accessories",
-    price: 99,
+    price: 7920,
     description: "Ergonomically contoured wireless precision mouse featuring silent click mechanisms and high-precision tracking.",
     specs: ["8,000 DPI Sensor", "Ergonomic Contour", "Dual Bluetooth & 2.4G", "70-Day Rechargeable Bat."],
     image: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=600&auto=format&fit=crop&q=80",
@@ -144,7 +144,7 @@ export const PRODUCTS: Product[] = [
     id: "cpu-1",
     name: "AMD Ryzen 9 7900X CPU",
     category: "Components",
-    price: 389,
+    price: 31120,
     description: "Next-gen desktop computing processor designed for heavy editing, game hosting, and software compilation.",
     specs: ["12 Cores / 24 Threads", "4.7GHz Base / 5.6GHz Boost", "AM5 Socket Design", "170W TDP Output"],
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&auto=format&fit=crop&q=80",
@@ -153,7 +153,7 @@ export const PRODUCTS: Product[] = [
     id: "ssd-1",
     name: "Crucial T500 2TB NVMe SSD",
     category: "Components",
-    price: 159,
+    price: 12720,
     description: "Extremely fast PCIe Gen4 SSD. Load games in milliseconds and transfer huge 4K render videos in seconds.",
     specs: ["2TB Storage Capacity", "Up to 7400MB/s Reads", "Up to 7000MB/s Writes", "Includes Premium Heatsink"],
     image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&auto=format&fit=crop&q=80",
@@ -220,8 +220,7 @@ const cardVariants: any = {
 
 const CATEGORIES = ["All", "Laptops", "Desktops", "Components", "Accessories"] as const;
 
-export const formatPrice = (usdPrice: number) => {
-  const inrPrice = usdPrice * 80;
+export const formatPrice = (inrPrice: number) => {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
