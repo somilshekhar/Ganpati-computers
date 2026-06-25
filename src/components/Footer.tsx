@@ -1,8 +1,36 @@
 import { Link } from "@tanstack/react-router";
-import { Moon } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import logo from "@/assets/ChatGPT Image May 30, 2026, 01_13_25 AM.png";
+import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 export function Footer() {
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
+
+  useEffect(() => {
+    const isDark = document.documentElement.classList.contains("dark");
+    setTheme(isDark ? "dark" : "light");
+  }, []);
+
+  const toggleTheme = () => {
+    if (theme === "dark") {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+      setTheme("light");
+    } else {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+      setTheme("dark");
+    }
+  };
+
+  const handlePolicyClick = (e: React.MouseEvent, policyName: string) => {
+    e.preventDefault();
+    toast.info(`${policyName} is available in-store.`, {
+      description: "Please contact support@ganpaticomputers.com for details.",
+    });
+  };
+
   return (
     <footer className="w-full bg-[#0E0E0E] text-white pt-16 pb-6 px-6 md:px-12 mt-16 rounded-t-[28px] rounded-b-none md:rounded-t-[32px] md:rounded-b-[28px] overflow-hidden relative border border-white/5">
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 pb-12">
@@ -22,7 +50,7 @@ export function Footer() {
             </div>
           </div>
           <p className="text-zinc-400 text-sm max-w-sm leading-relaxed mt-2">
-            Ganpati Computers is the technology you've been searching for. Premium laptops, pre-built custom gaming rigs, components, and reliable repair services.
+            Your trusted computer sales and service partner in Barmer, Rajasthan for over 16 years. Complete CCTV, networking, power backup, and technical solutions under one roof.
           </p>
         </div>
 
@@ -64,17 +92,29 @@ export function Footer() {
             </span>
             <ul className="flex flex-col gap-2.5 text-xs text-zinc-400">
               <li>
-                <a href="#" className="hover:text-white transition-colors cursor-pointer">
+                <a
+                  href="#"
+                  onClick={(e) => handlePolicyClick(e, "Privacy Policy")}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
                   Privacy Policy
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors cursor-pointer">
+                <a
+                  href="#"
+                  onClick={(e) => handlePolicyClick(e, "Terms & Conditions")}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
                   Terms & Conditions
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors cursor-pointer">
+                <a
+                  href="#"
+                  onClick={(e) => handlePolicyClick(e, "Warranty Policy")}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
                   Warranty Policy
                 </a>
               </li>
@@ -110,10 +150,14 @@ export function Footer() {
       {/* Bottom Part: Giant Text with Copyright & Moon Icon */}
       <div className="relative w-full overflow-hidden mt-10 select-none">
         <div className="flex items-end justify-between w-full">
-          {/* Moon Icon / Theme Toggle Indicator on bottom left */}
+          {/* Moon/Sun Icon / Theme Toggle Indicator on bottom left */}
           <div className="mb-2 md:mb-6 z-20">
-            <button className="grid h-10 w-10 place-items-center rounded-full bg-zinc-900 border border-white/10 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer">
-              <Moon className="h-4 w-4" />
+            <button
+              onClick={toggleTheme}
+              className="grid h-10 w-10 place-items-center rounded-full bg-zinc-900 border border-white/10 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer"
+              aria-label="Toggle dark mode"
+            >
+              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
           </div>
 

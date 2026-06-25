@@ -76,7 +76,7 @@ export const Route = createFileRoute("/categories")({
 
 function CategoriesPage() {
   return (
-    <div className="relative min-h-screen bg-[#0a0a0a] text-white flex flex-col font-sans antialiased overflow-x-hidden selection:bg-white/10 selection:text-white">
+    <div className="relative min-h-screen bg-background text-foreground dark:bg-[#0a0a0a] dark:text-white flex flex-col font-sans antialiased overflow-x-hidden selection:bg-white/10 selection:text-white">
       {/* Website Navbar */}
       <Navbar />
 
@@ -93,7 +93,7 @@ function CategoriesPage() {
             <h1 className="font-display text-[28px] sm:text-3xl md:text-4xl lg:text-[44px] leading-[1.15] font-normal tracking-tight">
               Explore Our Product Classes
             </h1>
-            <p className="text-sm md:text-[15px] leading-[1.6] text-white/60 max-w-2xl font-normal">
+            <p className="text-sm md:text-[15px] leading-[1.6] text-foreground/60 max-w-2xl font-normal">
               Select a category to browse our inventory. Every component and machine configuration is fully customizable to meet your specific gaming, editing, or business needs.
             </p>
           </div>

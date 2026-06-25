@@ -31,14 +31,16 @@ export function Navbar() {
 
       {/* CTAs */}
       <div className="hidden md:flex items-center gap-3">
-        <button
-          type="button"
+        <a
+          href={`https://wa.me/919571449865?text=${encodeURIComponent("Hello Ganpati Computers, I would like to make an enquiry regarding your products/services.")}`}
+          target="_blank"
+          rel="noopener noreferrer"
           className="hidden lg:inline-flex h-10 items-center rounded-full bg-white/10 text-white border border-white/10 px-5 text-xs font-semibold transition-all hover:bg-white/20"
         >
           Enquire Now
-        </button>
+        </a>
         <a
-          href="tel:+919876543210"
+          href="tel:+919571449865"
           className="hidden md:inline-flex h-10 items-center gap-2 rounded-full bg-white px-4 text-xs font-semibold text-ink transition-all hover:-translate-y-0.5 hover:shadow-[0_15px_40px_-10px_rgba(255,255,255,0.15)]"
         >
           <Phone className="h-3.5 w-3.5" />

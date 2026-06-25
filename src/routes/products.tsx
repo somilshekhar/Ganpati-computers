@@ -3,7 +3,7 @@ import { Background } from "@/components/Background";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ArrowLeft, ArrowRight, Search, SlidersHorizontal, ShoppingCart, Info, X, ChevronLeft, ChevronRight, ChevronUp, Share2, Home, Heart, User, Sparkle } from "lucide-react";
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 
 function TiltCard({ children, className, onClick }: { children: React.ReactNode; className?: string; onClick?: () => void }) {
@@ -67,13 +67,15 @@ function TiltCard({ children, className, onClick }: { children: React.ReactNode;
 import { z } from "zod";
 import { toast } from "sonner";
 
+import { getDbProducts } from "../lib/api/products.functions";
+
 // Define search query schema for TanStack Router
 const productSearchSchema = z.object({
   category: z.string().catch("").optional(),
   search: z.string().catch("").optional(),
 });
 
-interface Product {
+export interface Product {
   id: string;
   name: string;
   category: "Laptops" | "Desktops" | "Accessories" | "Components";
@@ -83,7 +85,7 @@ interface Product {
   image: string;
 }
 
-const PRODUCTS: Product[] = [
+export const PRODUCTS: Product[] = [
   {
     id: "lap-1",
     name: "AeroPro Ultrabook 14\"",
@@ -158,14 +160,14 @@ const PRODUCTS: Product[] = [
   },
 ];
 
-const SPEC_LABELS: Record<string, string[]> = {
+export const SPEC_LABELS: Record<string, string[]> = {
   Laptops: ["Processor", "Memory & Speed", "Storage Capacity", "Display Tech"],
   Desktops: ["Processor CPU", "Graphics GPU", "Memory RAM", "Storage NVMe"],
   Components: ["VRAM / Memory", "Architecture", "Technology", "Interface Type"],
   Accessories: ["Display Panel / Switches", "Refresh Rate / Design", "Response / Connectivity", "Features / Ergonomics"],
 };
 
-const GALLERY_IMAGES: Record<string, string[]> = {
+export const GALLERY_IMAGES: Record<string, string[]> = {
   Laptops: [
     "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=400&auto=format&fit=crop&q=80",
     "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=400&auto=format&fit=crop&q=80",
@@ -218,6 +220,15 @@ const cardVariants: any = {
 
 const CATEGORIES = ["All", "Laptops", "Desktops", "Components", "Accessories"] as const;
 
+export const formatPrice = (usdPrice: number) => {
+  const inrPrice = usdPrice * 80;
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(inrPrice);
+};
+
 export const Route = createFileRoute("/products")({
   validateSearch: productSearchSchema,
   head: () => ({
@@ -230,6 +241,7 @@ export const Route = createFileRoute("/products")({
 });
 
 function ProductsPage() {
+  const navigate = Route.useNavigate();
   const searchParams = Route.useSearch();
   
   // State initialization based on URL search query parameters
@@ -237,19 +249,91 @@ function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>(searchParams.category || "All");
   const [sortBy, setSortBy] = useState<string>("default");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [currentSlide, setCurrentSlide] = useState<"info" | "specs">("info");
+  const [activeImage, setActiveImage] = useState<string>("");
+  const [selectedColor, setSelectedColor] = useState<string>("Space Gray");
+
+  const [productsList, setProductsList] = useState<Product[]>([]);
+
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const res = await getDbProducts();
+        if (res.status === "success") {
+          if (res.products && Array.isArray(res.products)) {
+            setProductsList(res.products);
+            localStorage.setItem("ganpati_products", JSON.stringify(res.products));
+            return;
+          } else {
+            // KV is active but empty, initialize with defaults
+            setProductsList(PRODUCTS);
+            localStorage.setItem("ganpati_products", JSON.stringify(PRODUCTS));
+            return;
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load products from Vercel KV database, falling back to local storage:", err);
+      }
+
+      // Fallback path:
+      const stored = localStorage.getItem("ganpati_products");
+      if (stored) {
+        try {
+          setProductsList(JSON.parse(stored));
+        } catch (e) {
+          setProductsList(PRODUCTS);
+        }
+      } else {
+        localStorage.setItem("ganpati_products", JSON.stringify(PRODUCTS));
+        setProductsList(PRODUCTS);
+      }
+    }
+
+    loadProducts();
+  }, []);
+
+  // Reset modal helpers on product selection
+  useEffect(() => {
+    if (selectedProduct) {
+      setActiveImage(selectedProduct.image);
+      setSelectedColor("Space Gray");
+    }
+  }, [selectedProduct]);
+
+  // Keep React states in sync if URL query parameters change (e.g. back/forward navigation)
+  useEffect(() => {
+    setSearchQuery(searchParams.search || "");
+  }, [searchParams.search]);
+
+  useEffect(() => {
+    setSelectedCategory(searchParams.category || "All");
+  }, [searchParams.category]);
+
+  const handleSearchChange = (val: string) => {
+    setSearchQuery(val);
+    navigate({
+      search: (old) => ({ ...old, search: val || undefined }),
+      replace: true,
+    });
+  };
+
+  const handleCategoryChange = (cat: string) => {
+    setSelectedCategory(cat);
+    navigate({
+      search: (old) => ({ ...old, category: cat === "All" ? undefined : cat }),
+      replace: true,
+    });
+  };
 
   // Handle Enquiry click
   const handleEnquire = (productName: string) => {
-    toast.success(`Enquiry request sent for ${productName}! Our team will contact you soon.`, {
-      description: "Feel free to also call us directly for faster service.",
-      duration: 5000,
-    });
+    const message = `Hello Ganpati Computers, I want to enquire about: ${productName}.`;
+    const whatsappUrl = `https://wa.me/919571449865?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
   };
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
-    let result = [...PRODUCTS];
+    let result = [...productsList];
 
     // Category filter
     if (selectedCategory !== "All") {
@@ -277,10 +361,10 @@ function ProductsPage() {
     }
 
     return result;
-  }, [selectedCategory, searchQuery, sortBy]);
+  }, [productsList, selectedCategory, searchQuery, sortBy]);
 
   return (
-    <div className="relative min-h-screen bg-[#0a0a0a] text-white flex flex-col font-sans antialiased overflow-x-hidden selection:bg-white/10 selection:text-white">
+    <div className="relative min-h-screen bg-background text-foreground dark:bg-[#0a0a0a] dark:text-white flex flex-col font-sans antialiased overflow-x-hidden selection:bg-white/10 selection:text-white">
       {/* Website Navbar */}
       <Navbar />
 
@@ -296,7 +380,7 @@ function ProductsPage() {
           <div className="mb-6 flex items-center justify-between">
             <Link
               to="/"
-              className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-white/60 hover:text-white transition-colors group"
+              className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-foreground/60 hover:text-foreground transition-colors group"
             >
               <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-1" />
               Back
@@ -359,8 +443,8 @@ function ProductsPage() {
                 type="text"
                 placeholder="Search products, GPUs, custom builds..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-11 pl-11 pr-4 rounded-full border border-white/5 bg-white/5 text-sm placeholder:text-zinc-500 text-white focus:outline-none focus:ring-2 focus:ring-white/10 focus:border-white/20 transition-all"
+                onChange={(e) => handleSearchChange(e.target.value)}
+                className="w-full h-11 pl-11 pr-4 rounded-full border border-zinc-200 dark:border-white/5 bg-white/5 text-sm placeholder:text-zinc-500 text-foreground dark:text-white focus:outline-none focus:ring-2 focus:ring-white/10 focus:border-white/20 transition-all"
               />
             </div>
 
@@ -371,11 +455,11 @@ function ProductsPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="h-10 px-3 pr-8 rounded-full border border-white/5 bg-[#121214] text-xs font-bold uppercase tracking-wider text-white focus:outline-none focus:ring-2 focus:ring-white/10 transition-all cursor-pointer"
+                className="h-10 px-3 pr-8 rounded-full border border-zinc-200 dark:border-white/5 bg-background dark:bg-[#121214] text-xs font-bold uppercase tracking-wider text-foreground dark:text-white focus:outline-none focus:ring-2 focus:ring-white/10 transition-all cursor-pointer"
               >
-                <option value="default" className="bg-[#0a0a0a] text-white">Popularity</option>
-                <option value="price-asc" className="bg-[#0a0a0a] text-white">Price: Low-High</option>
-                <option value="price-desc" className="bg-[#0a0a0a] text-white">Price: High-Low</option>
+                <option value="default" className="bg-background dark:bg-[#0a0a0a] text-foreground dark:text-white">Popularity</option>
+                <option value="price-asc" className="bg-background dark:bg-[#0a0a0a] text-foreground dark:text-white">Price: Low-High</option>
+                <option value="price-desc" className="bg-background dark:bg-[#0a0a0a] text-foreground dark:text-white">Price: High-Low</option>
               </select>
             </div>
           </div>
@@ -387,7 +471,7 @@ function ProductsPage() {
               return (
                 <button
                   key={cat}
-                  onClick={() => setSelectedCategory(cat)}
+                  onClick={() => handleCategoryChange(cat)}
                   className={`h-9 px-5 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap border shrink-0 ${
                     isActive
                       ? "bg-[#3D3D3F] text-black border-[#3D3D3F] shadow-md"
@@ -401,7 +485,7 @@ function ProductsPage() {
           </div>
 
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-display text-lg font-bold tracking-tight text-white uppercase flex items-center gap-2">
+            <h2 className="font-display text-lg font-bold tracking-tight text-foreground uppercase flex items-center gap-2">
               <Sparkle className="h-4 w-4 text-[#3D3D3F]" />
               {selectedCategory === "All" ? "New Arrivals" : selectedCategory}
             </h2>
@@ -439,9 +523,12 @@ function ProductsPage() {
                           e.stopPropagation();
                           handleEnquire(product.name);
                         }}
-                        className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer z-10"
+                        className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white hover:bg-[#25D366] hover:text-white hover:border-[#25D366] hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer z-10"
+                        title="Enquire on WhatsApp"
                       >
-                        <ShoppingCart className="h-3.5 w-3.5" />
+                        <svg className="h-4.5 w-4.5 fill-current" viewBox="0 0 24 24">
+                          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.451 5.403.002 9.803-4.389 9.805-9.788.002-2.615-1.01-5.074-2.853-6.918C16.381 2.054 13.918.992 11.31.991 5.9.991 1.5 5.382 1.496 10.78c-.001 1.534.398 3.033 1.155 4.35l-.26 1.56-.251 1.503 1.54-.404 1.488-.391c1.295.772 2.766 1.176 4.139 1.176z" />
+                        </svg>
                       </button>
                       
                       {/* Glassmorphic sweep reflection */}
@@ -463,8 +550,8 @@ function ProductsPage() {
                       <h3 className="font-sans text-xs font-semibold text-white/90 leading-tight line-clamp-1 group-hover:text-white transition-colors">
                         {product.name}
                       </h3>
-                      <span className="text-sm font-bold text-[#3D3D3F] mt-1">
-                        ${product.price}
+                      <span className="text-sm font-bold text-foreground/90 font-mono mt-1">
+                        {formatPrice(product.price)}
                       </span>
                     </div>
                   </TiltCard>
@@ -483,8 +570,8 @@ function ProductsPage() {
               </p>
               <button
                 onClick={() => {
-                  setSearchQuery("");
-                  setSelectedCategory("All");
+                  handleSearchChange("");
+                  handleCategoryChange("All");
                 }}
                 className="mt-4 text-xs font-semibold underline text-zinc-300 hover:text-white cursor-pointer"
               >
@@ -497,7 +584,7 @@ function ProductsPage() {
 
       <Footer />
 
-      {/* Product Details Modal / Drawer Mockup Layout */}
+      {/* Product Details Modal / Drawer Layout */}
       <AnimatePresence>
         {selectedProduct && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-4 select-none">
@@ -506,232 +593,200 @@ function ProductsPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => {
-                setSelectedProduct(null);
-                setCurrentSlide("info");
-              }}
+              onClick={() => setSelectedProduct(null)}
               className="absolute inset-0 bg-black/85 backdrop-blur-sm"
             />
 
-            {/* Modal Body: Mobile full screen, desktop simulated premium phone screen */}
+            {/* Modal Body: Responsive grid card */}
             <motion.div
               initial={{ opacity: 0, y: 50, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 50, scale: 0.95 }}
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full h-full md:w-[410px] md:h-[820px] md:max-h-[90vh] md:rounded-[40px] md:border md:border-white/10 md:shadow-[0_0_80px_rgba(0,0,0,0.8)] bg-[#121214] overflow-hidden flex flex-col text-white z-10"
+              className="relative w-full max-w-4xl h-full md:h-auto md:max-h-[90vh] rounded-none md:rounded-3xl border border-zinc-200 dark:border-white/10 bg-background dark:bg-[#121214] text-foreground dark:text-white shadow-[0_24px_100px_rgba(0,0,0,0.8)] overflow-hidden z-10 flex flex-col md:grid md:grid-cols-12"
             >
-              {/* Phone Dynamic Island Decoration for Desktop */}
-              <div className="hidden md:block absolute top-3.5 left-1/2 -translate-x-1/2 w-28 h-5.5 bg-black rounded-full z-30 ring-1 ring-white/5" />
+              {/* Left Column: Visuals (Col span 5) */}
+              <div className="md:col-span-5 flex flex-col bg-zinc-50 dark:bg-zinc-950 p-6 border-b md:border-b-0 md:border-r border-zinc-200 dark:border-white/10 relative justify-between">
+                
+                {/* Header Actions for Mobile: back button, share button */}
+                <div className="absolute top-4 left-4 right-4 z-10 flex md:hidden items-center justify-between">
+                  <button
+                    onClick={() => setSelectedProduct(null)}
+                    className="w-10 h-10 rounded-full bg-white/80 dark:bg-white/10 border border-zinc-200 dark:border-white/10 flex items-center justify-center text-foreground dark:text-white backdrop-blur-md"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      toast.success("Details link copied!");
+                      navigator.clipboard.writeText(`${window.location.origin}/products?search=${encodeURIComponent(selectedProduct.name)}`);
+                    }}
+                    className="w-10 h-10 rounded-full bg-white/80 dark:bg-white/10 border border-zinc-200 dark:border-white/10 flex items-center justify-center text-foreground dark:text-white backdrop-blur-md"
+                  >
+                    <Share2 className="h-4.5 w-4.5" />
+                  </button>
+                </div>
 
-              {/* Slider Viewport */}
-              <div className="flex-1 relative overflow-hidden h-full">
-                <motion.div
-                  animate={{ x: currentSlide === "specs" ? "-50%" : "0%" }}
-                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex w-[200%] h-full"
-                >
-                  {/* SLIDE 1: PRODUCT DETAILS HERO */}
-                  <div className="w-1/2 h-full flex flex-col justify-between relative bg-[#121214]">
-                    {/* Header Row */}
-                    <div className="absolute top-4 md:top-8 left-0 right-0 z-20 flex items-center justify-between px-6">
-                      <button
-                        onClick={() => setSelectedProduct(null)}
-                        className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white backdrop-blur-md hover:bg-white/20 transition-all active:scale-95 cursor-pointer"
-                      >
-                        <ChevronLeft className="h-5 w-5" />
-                      </button>
-                      
-                      {/* Interactive slide indicator dots */}
-                      <div className="flex gap-1.5 items-center bg-black/40 border border-white/10 py-1.5 px-3.5 rounded-full backdrop-blur-md">
-                        <span className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${currentSlide === "info" ? "bg-white scale-125" : "bg-white/35"}`} />
-                        <span className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${currentSlide === "specs" ? "bg-white scale-125" : "bg-white/35"}`} />
-                      </div>
+                {/* Main Image View */}
+                <div className="flex-grow min-h-[280px] max-h-[380px] flex items-center justify-center relative py-6">
+                  <img
+                    src={activeImage || selectedProduct.image}
+                    alt={selectedProduct.name}
+                    className="max-h-full max-w-full object-contain filter drop-shadow-md transition-all duration-300"
+                  />
+                </div>
 
-                      <button
-                        onClick={() => {
-                          toast.success("Details link copied!");
-                          navigator.clipboard.writeText(`${window.location.origin}/products?search=${encodeURIComponent(selectedProduct.name)}`);
-                        }}
-                        className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white backdrop-blur-md hover:bg-white/20 transition-all active:scale-95 cursor-pointer"
-                      >
-                        <Share2 className="h-4.5 w-4.5" />
-                      </button>
-                    </div>
+                {/* Gallery Grid */}
+                <div className="mt-4 space-y-2">
+                  <span className="text-[9px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest block">
+                    Product Gallery
+                  </span>
+                  <div className="grid grid-cols-4 gap-2">
+                    {(GALLERY_IMAGES[selectedProduct.category] || []).map((imgUrl, i) => {
+                      const isSelected = activeImage === imgUrl;
+                      return (
+                        <button
+                          key={i}
+                          onClick={() => setActiveImage(imgUrl)}
+                          className={`aspect-square rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 border transition-all cursor-pointer ${isSelected ? "border-[#3D3D3F] dark:border-white ring-2 ring-[#3D3D3F]/20 dark:ring-white/20" : "border-zinc-200 dark:border-white/5 hover:border-zinc-300 dark:hover:border-white/20"}`}
+                        >
+                          <img
+                            src={imgUrl}
+                            alt={`Gallery thumbnail ${i + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
 
-                    {/* Product Image Panel */}
-                    <div className="h-[55%] w-full relative overflow-hidden flex items-center justify-center bg-gradient-to-b from-[#1c1c1f]/40 to-[#121214]">
-                      <img
-                        src={selectedProduct.image}
-                        alt={selectedProduct.name}
-                        className="w-full h-full object-cover"
-                      />
-                      {/* Vignette Gradients */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#121214] via-transparent to-black/30 pointer-events-none" />
-                    </div>
+              {/* Right Column: Details & Specs (Col span 7) */}
+              <div className="md:col-span-7 flex flex-col p-6 md:p-8 justify-between overflow-y-auto md:max-h-[90vh]">
+                
+                {/* Header Actions for Desktop */}
+                <div className="hidden md:flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-white/5 mb-6">
+                  <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                    Product Specification
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => {
+                        toast.success("Details link copied!");
+                        navigator.clipboard.writeText(`${window.location.origin}/products?search=${encodeURIComponent(selectedProduct.name)}`);
+                      }}
+                      className="w-9 h-9 rounded-full bg-zinc-100 hover:bg-zinc-200 dark:bg-white/5 dark:hover:bg-white/10 border border-zinc-200 dark:border-white/10 flex items-center justify-center text-foreground dark:text-white transition-all active:scale-95 cursor-pointer"
+                      title="Share link"
+                    >
+                      <Share2 className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => setSelectedProduct(null)}
+                      className="w-9 h-9 rounded-full bg-zinc-100 hover:bg-zinc-200 dark:bg-white/5 dark:hover:bg-white/10 border border-zinc-200 dark:border-white/10 flex items-center justify-center text-foreground dark:text-white transition-all active:scale-95 cursor-pointer"
+                      title="Close"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
 
-                    {/* Info Sheet Bottom Drawer */}
-                    <div className="h-[45%] bg-[#1c1c1f]/95 backdrop-blur-xl border-t border-white/10 rounded-t-[32px] p-6 flex flex-col justify-between relative z-10 shadow-[0_-15px_40px_rgba(0,0,0,0.5)]">
-                      <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-10 h-1 bg-white/15 rounded-full" />
+                {/* Details Body */}
+                <div className="space-y-6 flex-grow pr-1">
+                  <div className="space-y-2">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#3D3D3F] dark:text-[#E4E4E7] block bg-zinc-100 dark:bg-white/5 px-2.5 py-1 rounded w-fit border border-zinc-200 dark:border-white/5">
+                      {selectedProduct.category}
+                    </span>
+                    <h2 className="font-display text-2xl md:text-3xl font-extrabold text-foreground dark:text-white tracking-tight leading-tight">
+                      {selectedProduct.name}
+                    </h2>
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed font-sans font-normal pt-1">
+                      {selectedProduct.description}
+                    </p>
+                  </div>
 
-                      <div className="space-y-3 mt-1.5 overflow-y-auto pr-1">
-                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#3D3D3F] block">
-                          {selectedProduct.category}
-                        </span>
-                        <h2 className="font-display text-2xl font-extrabold text-white tracking-tight leading-tight">
-                          {selectedProduct.name}
-                        </h2>
-                        <p className="text-xs text-zinc-400 leading-relaxed font-normal font-sans">
-                          {selectedProduct.description}
-                        </p>
-                      </div>
-
-                      <div className="space-y-4 pt-4 border-t border-white/5">
-                        {/* Pricing */}
-                        <div className="flex items-baseline gap-1">
-                          <span className="text-xs text-zinc-500 font-medium">Price:</span>
-                          <span className="text-2xl font-black text-white">
-                            ${selectedProduct.price}
-                          </span>
-                        </div>
-
-                        {/* CTAs */}
-                        <div className="flex items-center gap-3">
-                          <button
-                            onClick={() => {
-                              handleEnquire(selectedProduct.name);
-                              setSelectedProduct(null);
-                            }}
-                            className="flex-grow h-12 rounded-full bg-lilac-gradient hover:shadow-glow-lilac font-bold text-xs uppercase tracking-wider text-white transition-all duration-300 active:scale-95 flex items-center justify-center cursor-pointer"
-                          >
-                            Enquire Now
-                          </button>
-                          
-                          <button
-                            onClick={() => setCurrentSlide("specs")}
-                            className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-all active:scale-95 cursor-pointer"
-                            aria-label="Next slide"
-                          >
-                            <ChevronRight className="h-5 w-5" />
-                          </button>
-                        </div>
-                      </div>
+                  {/* Tech Specs */}
+                  <div className="space-y-3 pt-2">
+                    <span className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase block">
+                      Technical Specs
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-zinc-50 dark:bg-[#1a1a1c]/60 p-4 rounded-2xl border border-zinc-200 dark:border-white/5 font-sans">
+                      {selectedProduct.specs.map((spec, index) => {
+                        const labels = SPEC_LABELS[selectedProduct.category] || ["Detail", "Specification", "System", "Performance"];
+                        const label = labels[index] || `Spec ${index + 1}`;
+                        return (
+                          <div key={index} className="space-y-1">
+                            <span className="text-[9px] font-bold tracking-widest text-zinc-400 dark:text-zinc-500 uppercase block">
+                              {label}
+                            </span>
+                            <p className="text-xs font-semibold text-foreground dark:text-white">
+                              {spec}
+                            </p>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
 
-                  {/* SLIDE 2: TECHNICAL SPECS & DETAILS PANEL */}
-                  <div className="w-1/2 h-full flex flex-col relative bg-[#121214] justify-between overflow-hidden">
-                    {/* Header Row */}
-                    <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-[#121214]/60 backdrop-blur-md z-20">
-                      <button
-                        onClick={() => setCurrentSlide("info")}
-                        className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white backdrop-blur-md hover:bg-white/20 transition-all active:scale-95 cursor-pointer"
-                      >
-                        <ChevronLeft className="h-5 w-5" />
-                      </button>
-                      
-                      <span className="text-xs font-bold uppercase tracking-wider text-zinc-300">
-                        Technical Details
+                  {/* Colors swatches */}
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase block">
+                        COLORS
                       </span>
-
-                      <button
-                        onClick={() => {
-                          setSelectedProduct(null);
-                          setCurrentSlide("info");
-                        }}
-                        className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white backdrop-blur-md hover:bg-white/20 transition-all active:scale-95 cursor-pointer"
-                      >
-                        <X className="h-4.5 w-4.5" />
-                      </button>
+                      <span className="text-[10px] font-bold text-foreground/75 dark:text-zinc-300 font-mono">
+                        — {selectedColor}
+                      </span>
                     </div>
-
-                    {/* Scrollable specs wrapper */}
-                    <div className="flex-1 overflow-y-auto">
-                      {/* Small cropped visual representation */}
-                      <div className="h-32 w-full relative overflow-hidden bg-zinc-900 border-b border-white/5">
-                        <img
-                          src={selectedProduct.image}
-                          alt={selectedProduct.name}
-                          className="w-full h-full object-cover object-center opacity-85"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#121214] via-[#121214]/20 to-transparent" />
-                      </div>
-
-                      {/* Technical Specs List */}
-                      <div className="p-6 space-y-6">
-                        <div className="space-y-4 font-sans">
-                          {selectedProduct.specs.map((spec, index) => {
-                            const labels = SPEC_LABELS[selectedProduct.category] || ["Detail", "Specification", "System", "Performance"];
-                            const label = labels[index] || `Spec ${index + 1}`;
-                            return (
-                              <div key={index} className="space-y-1">
-                                <span className="text-[10px] font-bold tracking-widest text-[#3D3D3F] uppercase block">
-                                  {label}
-                                </span>
-                                <p className="text-sm font-semibold text-white">
-                                  {spec}
-                                </p>
-                              </div>
-                            );
-                          })}
-                        </div>
-
-                        {/* Colors swatches */}
-                        <div className="space-y-3 pt-2">
-                          <span className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase block">
-                            COLORS
-                          </span>
-                          <div className="flex gap-4">
-                            {SWATCHES.map((swatch) => (
-                              <div key={swatch.name} className="flex flex-col items-center gap-1 group/swatch">
-                                <span
-                                  className="w-8 h-8 rounded-full border border-white/15 flex items-center justify-center shadow-md relative cursor-pointer"
-                                  style={{ backgroundColor: swatch.color }}
-                                  title={swatch.label}
-                                >
-                                  <span className="absolute inset-0 rounded-full border border-white/20 hover:scale-110 transition-transform duration-200" />
-                                </span>
-                                <span className="text-[9px] font-bold text-zinc-500 uppercase group-hover/swatch:text-zinc-300 transition-colors">
-                                  {swatch.name}
-                                </span>
-                              </div>
-                            ))}
+                    <div className="flex gap-3">
+                      {SWATCHES.map((swatch) => {
+                        const isSelected = selectedColor === swatch.label;
+                        return (
+                          <div key={swatch.name} className="flex flex-col items-center gap-1 group/swatch">
+                            <button
+                              onClick={() => setSelectedColor(swatch.label)}
+                              className={`w-8 h-8 rounded-full border flex items-center justify-center shadow-md relative transition-transform hover:scale-105 active:scale-95 cursor-pointer ${isSelected ? "border-[#3D3D3F] dark:border-white ring-2 ring-[#3D3D3F]/20 dark:ring-white/20" : "border-zinc-300 dark:border-white/15"}`}
+                              style={{ backgroundColor: swatch.color }}
+                              title={swatch.label}
+                            >
+                              {isSelected && (
+                                <span className="w-1.5 h-1.5 rounded-full bg-white mix-blend-difference" />
+                              )}
+                            </button>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Product Gallery Grid Bottom Sheet */}
-                    <div className="bg-[#0c0c0e]/95 border-t border-white/15 p-6 flex flex-col gap-4 relative z-10 shadow-[0_-15px_40px_rgba(0,0,0,0.6)]">
-                      <div className="absolute top-2 left-1/2 -translate-x-1/2 w-10 h-0.5 bg-white/10 rounded-full" />
-
-                      <div className="flex justify-between items-center px-1">
-                        <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                          Product Gallery
-                        </span>
-                        <span className="text-[10px] font-semibold text-zinc-500">
-                          4 Photos
-                        </span>
-                      </div>
-
-                      {/* Thumbnail Images */}
-                      <div className="grid grid-cols-4 gap-2">
-                        {(GALLERY_IMAGES[selectedProduct.category] || []).map((imgUrl, i) => (
-                          <div
-                            key={i}
-                            className="aspect-square rounded-xl overflow-hidden bg-zinc-900 border border-white/5 hover:border-white/20 transition-all cursor-zoom-in"
-                          >
-                            <img
-                              src={imgUrl}
-                              alt={`Gallery thumbnail ${i + 1}`}
-                              className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
-                            />
-                          </div>
-                        ))}
-                      </div>
+                        );
+                      })}
                     </div>
                   </div>
-                </motion.div>
+                </div>
+
+                {/* Footer Drawer pricing & actions */}
+                <div className="pt-6 border-t border-zinc-200 dark:border-white/5 mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-bold tracking-widest text-zinc-500 uppercase">Estimated Price</span>
+                    <span className="text-2xl sm:text-3xl font-black text-foreground dark:text-white font-mono">
+                      {formatPrice(selectedProduct.price)}
+                    </span>
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        handleEnquire(selectedProduct.name);
+                        setSelectedProduct(null);
+                      }}
+                      className="h-12 px-8 rounded-full bg-lilac-gradient hover:shadow-glow-lilac font-bold text-xs uppercase tracking-wider text-white transition-all duration-300 active:scale-95 flex items-center justify-center cursor-pointer"
+                    >
+                      Enquire Now
+                    </button>
+                    <button
+                      onClick={() => setSelectedProduct(null)}
+                      className="md:hidden h-12 px-6 rounded-full bg-zinc-100 dark:bg-white/5 text-foreground dark:text-white font-bold text-xs uppercase tracking-wider transition-all duration-200 active:scale-95 flex items-center justify-center border border-zinc-200 dark:border-white/10"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>

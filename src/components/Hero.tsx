@@ -46,8 +46,8 @@ export function Hero() {
         </h1>
 
         <p className="mt-6 max-w-md text-[15px] leading-relaxed text-white/65">
-          Explore a wide range of computers, laptops, accessories and more:
-          quality products, trusted service.
+          Your trusted technology partner in Barmer, Rajasthan for over 16 years.
+          We provide computer sales, service, accessories, CCTV, and power backup solutions.
         </p>
 
         {/* Product showcase */}

@@ -41,7 +41,7 @@ function AboutPage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#0a0a0a] text-white flex flex-col font-sans antialiased overflow-x-hidden selection:bg-white/10 selection:text-white">
+    <div className="relative min-h-screen bg-background text-foreground dark:bg-[#0a0a0a] dark:text-white flex flex-col font-sans antialiased overflow-x-hidden selection:bg-white/10 selection:text-white">
       {/* Website Navbar */}
       <Navbar />
 
@@ -58,8 +58,8 @@ function AboutPage() {
             <h1 className="font-display text-[28px] sm:text-3xl md:text-4xl lg:text-[44px] leading-[1.15] font-normal tracking-tight">
               We build hardware that powers your world.
             </h1>
-            <p className="text-sm md:text-[15px] leading-[1.6] text-white/60 max-w-2xl font-normal">
-              Ganpati Computers is your trusted technology partner, crafting high-performance custom gaming PCs, visual editing workstations, and offering transparent hardware diagnostics since 2008.
+            <p className="text-sm md:text-[15px] leading-[1.6] text-foreground/60 max-w-2xl font-normal">
+              Ganpati Computers has been a trusted name in Barmer, Rajasthan, for over 16 years, providing reliable computer sales, service, and technical solutions to individuals, businesses, educational institutions, and government organizations.
             </p>
           </div>
 
@@ -76,14 +76,12 @@ function AboutPage() {
           
           {/* Column 1 - Timeline Card */}
           <div className="relative rounded-2xl bg-black overflow-hidden border border-white/5 flex flex-col justify-between p-6 min-h-[360px] md:min-h-[440px]">
-            {/* Background Video */}
-            <video
-              src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260507_150203_44a5bd32-516a-47ce-a077-8acbf9aa8991.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover opacity-45 mix-blend-screen pointer-events-none"
+            {/* Background Image */}
+            <img
+              src="https://images.unsplash.com/photo-1618424181497-157f25b6ddd5?w=800&auto=format&fit=crop&q=80"
+              alt="Custom Widescreen Desktop Setup"
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover opacity-40 pointer-events-none"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/15 to-black/35 pointer-events-none" />
 
@@ -99,9 +97,9 @@ function AboutPage() {
             {/* Timeline */}
             <div className="relative z-10 space-y-4 pt-16">
               {[
-                { year: "2020-Now", role: "Expanded Custom PC Builds", tag: "Main Showroom" },
-                { year: "2012-2020", role: "High-Tier Sourcing", tag: "Core Partners" },
-                { year: "2008-2012", role: "Founded Local Workshop", tag: "Service Hub" }
+                { year: "2020-Now", role: "CCTV, IT & Power Solutions", tag: "Palika Bazar" },
+                { year: "2015-2020", role: "Expanded Sales & Service", tag: "Corporate Partner" },
+                { year: "2010-2015", role: "Founded Workshop in Barmer", tag: "IT Hub" }
               ].map((item, idx) => (
                 <div
                   key={idx}
@@ -143,14 +141,12 @@ function AboutPage() {
 
             {/* Bottom - Metrics Card */}
             <div className="relative rounded-2xl bg-black overflow-hidden border border-white/5 flex flex-col justify-between items-center p-6 min-h-[190px]">
-              {/* Background Video */}
-              <video
-                src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260507_154543_d5b83fc1-9cea-44f3-b5e8-8f325935211a.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-screen pointer-events-none"
+              {/* Background Image */}
+              <img
+                src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=800&auto=format&fit=crop&q=80"
+                alt="Premium Laptop Mockup"
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover opacity-40 pointer-events-none"
               />
               <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/45 pointer-events-none" />
 
@@ -172,14 +168,12 @@ function AboutPage() {
           <div className="grid grid-rows-[1fr_auto] gap-4 md:gap-5">
             {/* Top - Daily Software / Tech stack Card */}
             <div className="relative rounded-2xl bg-black overflow-hidden border border-white/5 p-6 flex flex-col justify-between min-h-[220px]">
-              {/* Background Video */}
-              <video
-                src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260507_153148_d7a3e1dd-e5d0-4ce6-8306-00d7522ecc44.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover opacity-35 mix-blend-screen pointer-events-none"
+              {/* Background Image */}
+              <img
+                src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800&auto=format&fit=crop&q=80"
+                alt="Motherboard CPU Internals"
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none"
               />
               <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/30 pointer-events-none" />
 
@@ -255,17 +249,61 @@ function AboutPage() {
               </div>
 
               <div className="space-y-1">
-                <div className="text-zinc-400 text-[10px] uppercase font-bold tracking-wider">Phone Helpline</div>
+                <div className="text-zinc-400 text-[10px] uppercase font-bold tracking-wider">Phone Helplines</div>
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+919571449865"
                   className="text-sm font-semibold text-white/90 hover:underline block"
                 >
-                  +91 98765 43210
+                  +91 95714 49865
                 </a>
+                <a
+                  href="tel:+919950769495"
+                  className="text-sm font-semibold text-white/90 hover:underline block"
+                >
+                  +91 99507 69495
+                </a>
+              </div>
+
+              <div className="space-y-1 pt-2 border-t border-white/5">
+                <div className="text-zinc-400 text-[10px] uppercase font-bold tracking-wider">Store Location</div>
+                <div className="text-xs font-semibold text-white/90 leading-tight">
+                  Shop No. G-33, Palika Bazar, Barmer (Rajasthan)
+                </div>
               </div>
             </div>
           </div>
 
+        </div>
+
+        {/* What We Offer Section */}
+        <div className="mt-8 rounded-2xl border border-white/5 bg-[#121214]/65 backdrop-blur-md p-8 noise-overlay">
+          <div className="flex items-center gap-2 mb-6 justify-center">
+            <Sparkle className="h-4 w-4 text-white/50 animate-pulse" />
+            <h2 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-white uppercase">
+              What We Offer
+            </h2>
+            <Sparkle className="h-4 w-4 text-white/50 animate-pulse" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm text-white/80">
+            {[
+              "Laptop Sales & Service",
+              "Desktop Computer Sales & Repair",
+              "Peripherals & Accessories",
+              "CCTV Camera Sales, Installation & Maintenance",
+              "Printer Sales, Repair & Ink Solutions",
+              "Projectors & Related Equipment",
+              "UPS & Inverter Solutions",
+              "Batteries & Power Backup Products",
+              "Computer Parts & Hardware Upgrades",
+              "IT Support & Sourcing Services",
+              "Electronic & Electrical Item Repairing",
+            ].map((service, i) => (
+              <div key={i} className="flex items-center gap-2.5 p-3 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 hover:bg-white/10 transition-all duration-300">
+                <span className="text-zinc-500 font-mono text-xs">{(i + 1).toString().padStart(2, '0')}</span>
+                <span className="font-semibold text-white/90">{service}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </motion.main>
 

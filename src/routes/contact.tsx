@@ -57,7 +57,7 @@ function ContactPage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#0a0a0a] text-white flex flex-col font-sans antialiased overflow-x-hidden selection:bg-white/10 selection:text-white">
+    <div className="relative min-h-screen bg-background text-foreground dark:bg-[#0a0a0a] dark:text-white flex flex-col font-sans antialiased overflow-x-hidden selection:bg-white/10 selection:text-white">
       {/* Website Navbar */}
       <Navbar />
 
@@ -74,13 +74,13 @@ function ContactPage() {
             <h1 className="font-display text-[28px] sm:text-3xl md:text-4xl lg:text-[44px] leading-[1.15] font-normal tracking-tight">
               Get in Touch
             </h1>
-            <p className="text-sm md:text-[15px] leading-[1.6] text-white/60 max-w-2xl font-normal">
+            <p className="text-sm md:text-[15px] leading-[1.6] text-foreground/60 max-w-2xl font-normal">
               Have questions about component inventory, budget allocations, custom builds, or repair estimates? Drop us a line below or contact us directly.
             </p>
           </div>
 
           <a
-            href="tel:+919876543210"
+            href="tel:+919571449865"
             className="self-start md:self-auto px-5 sm:px-6 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-semibold tracking-wider uppercase text-white hover:text-black hover:bg-white transition-all duration-300 liquid-glass active:scale-95 cursor-pointer text-center"
           >
             Call Support Helpline
@@ -89,17 +89,15 @@ function ContactPage() {
 
         {/* Bento Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-5 flex-grow items-stretch">
-          
+
           {/* Card 1: Direct Channels (Col 1, Row 1) */}
           <div className="relative rounded-2xl bg-black overflow-hidden border border-white/5 flex flex-col justify-between p-6 min-h-[300px]">
-            {/* Background Video */}
-            <video
-              src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260507_150203_44a5bd32-516a-47ce-a077-8acbf9aa8991.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover opacity-45 mix-blend-screen pointer-events-none"
+            {/* Background Image */}
+            <img
+              src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800&auto=format&fit=crop&q=80"
+              alt="Computer Motherboard Internals"
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover opacity-35 pointer-events-none"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-black/35 pointer-events-none" />
 
@@ -111,17 +109,31 @@ function ContactPage() {
             </div>
 
             <div className="relative z-10 space-y-4 pt-12">
-              {/* Phone */}
+              {/* Phone 1 */}
               <a
-                href="tel:+919876543210"
+                href="tel:+919571449865"
                 className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-all group"
               >
                 <div className="h-8 w-8 rounded-lg bg-[#3D3D3F]/10 text-[#3D3D3F] flex items-center justify-center">
                   <Phone className="h-4 w-4" />
                 </div>
                 <div>
-                  <div className="text-[9px] font-bold uppercase tracking-wider text-zinc-500">Helpline</div>
-                  <div className="text-xs font-bold text-white group-hover:underline">+91 98765 43210</div>
+                  <div className="text-[9px] font-bold uppercase tracking-wider text-zinc-500">Helpline 1</div>
+                  <div className="text-xs font-bold text-white group-hover:underline">+91 95714 49865</div>
+                </div>
+              </a>
+
+              {/* Phone 2 */}
+              <a
+                href="tel:+919950769495"
+                className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-all group"
+              >
+                <div className="h-8 w-8 rounded-lg bg-[#3D3D3F]/10 text-[#3D3D3F] flex items-center justify-center">
+                  <Phone className="h-4 w-4" />
+                </div>
+                <div>
+                  <div className="text-[9px] font-bold uppercase tracking-wider text-zinc-500">Helpline 2</div>
+                  <div className="text-xs font-bold text-white group-hover:underline">+91 99507 69495</div>
                 </div>
               </a>
 
@@ -146,7 +158,7 @@ function ContactPage() {
                 </div>
                 <div>
                   <div className="text-[9px] font-bold uppercase tracking-wider text-zinc-500">Main Store</div>
-                  <div className="text-xs font-bold text-white leading-tight">New Delhi, India</div>
+                  <div className="text-xs font-bold text-white leading-tight">Shop No. G-33, Palika Bazar, Barmer (Rajasthan)</div>
                 </div>
               </div>
             </div>
@@ -175,7 +187,7 @@ function ContactPage() {
                     required
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="Somil Shekhar"
+                    placeholder="ganpati computers"
                     className="w-full h-11 px-4 rounded-xl border border-white/10 bg-white/5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-[#3D3D3F] focus:border-[#3D3D3F] transition-all"
                   />
                 </div>
@@ -192,7 +204,7 @@ function ContactPage() {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="somil@example.com"
+                    placeholder="ganpati@example.com"
                     className="w-full h-11 px-4 rounded-xl border border-white/10 bg-white/5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-[#3D3D3F] focus:border-[#3D3D3F] transition-all"
                   />
                 </div>
@@ -294,19 +306,17 @@ function ContactPage() {
 
           {/* Card 4: 24h Emergency Diagnostics (Col 2-3, Row 2) */}
           <div className="lg:col-span-2 relative rounded-2xl bg-black overflow-hidden border border-white/5 flex flex-col justify-between items-center p-6 min-h-[190px]">
-            {/* Background Video */}
-            <video
-              src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260507_154543_d5b83fc1-9cea-44f3-b5e8-8f325935211a.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover opacity-45 mix-blend-screen pointer-events-none"
+            {/* Background Image */}
+            <img
+              src="https://images.unsplash.com/photo-1618424181497-157f25b6ddd5?w=800&auto=format&fit=crop&q=80"
+              alt="Desktop PC workstation"
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover opacity-35 pointer-events-none"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/45 pointer-events-none" />
 
             <div className="h-2" />
-            
+
             <div className="relative z-10 text-center flex flex-col items-center">
               <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#3D3D3F] bg-[#3D3D3F]/10 px-3 py-1 rounded-full flex items-center gap-1 mb-2">
                 <Cpu className="h-3.5 w-3.5 text-[#3D3D3F] animate-spin" /> Priority Line

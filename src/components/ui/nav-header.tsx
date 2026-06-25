@@ -160,13 +160,22 @@ function NavHeader() {
                     className="border-t border-white/5 pt-6 flex flex-col gap-6"
                   >
                     {/* Quick CTA */}
-                    <a
-                      href="tel:+919876543210"
-                      className="w-full flex h-11 items-center justify-center gap-2 rounded-full bg-white text-ink text-xs font-bold uppercase transition-all hover:bg-zinc-200"
-                    >
-                      <Phone className="h-4 w-4 text-ink" />
-                      Call Support
-                    </a>
+                    <div className="grid grid-cols-2 gap-2">
+                      <a
+                        href="tel:+919571449865"
+                        className="flex h-11 items-center justify-center gap-1.5 rounded-full bg-white text-ink text-[10px] font-bold uppercase transition-all hover:bg-zinc-200"
+                      >
+                        <Phone className="h-3.5 w-3.5 text-ink" />
+                        Call Line 1
+                      </a>
+                      <a
+                        href="tel:+919950769495"
+                        className="flex h-11 items-center justify-center gap-1.5 rounded-full bg-white text-ink text-[10px] font-bold uppercase transition-all hover:bg-zinc-200"
+                      >
+                        <Phone className="h-3.5 w-3.5 text-ink" />
+                        Call Line 2
+                      </a>
+                    </div>
 
                     {/* Contact Details */}
                     <div className="grid grid-cols-1 gap-4 text-xs text-zinc-400">
@@ -179,6 +188,10 @@ function NavHeader() {
                         <a href="mailto:info@ganpaticomputers.com" className="hover:text-white transition-colors text-[11px] text-zinc-300">
                           info@ganpaticomputers.com
                         </a>
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-zinc-500">Location</span>
+                        <p className="text-[11px] text-zinc-300">Shop No. G-33, Palika Bazar, Barmer (Rajasthan)</p>
                       </div>
                     </div>
                   </motion.div>
